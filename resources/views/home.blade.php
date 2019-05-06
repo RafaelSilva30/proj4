@@ -25,7 +25,7 @@ object {
         <div class="col-xs-12">
             <div class="box">
             <div class="box-header">
-              <h1 class="box-title" >Tarefas dos proximos 30 dias </h1>
+              <h1 class="box-title" >Tarefas dos proximosss 30 dias </h1>
               
 
               

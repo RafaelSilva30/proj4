@@ -35,6 +35,7 @@ object {
                   <th>Observações</th>
                   <th>Id Entidade</th>
                   <th>Tipo</th>
+                  <th>Ações</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,8 @@ object {
                                 <td>{{$tarefa->observacao}}</td>
                                 <td>{{$tarefa->entidade}}</td>
                                 <td>{{$tarefa->tipo_tarefa_idtipo_tarefa}}</td>
+                                <td> <object align="center"><i class="fa fa-edit fa-2x"   type="button" 
+               data-toggle="modal" data-target="#editTarefasModal"></i></object> </td>
                                 </tr>
                         @endforeach
                     @else  
@@ -130,6 +133,83 @@ object {
                         <div>
                         
                             <button href="tarefas/create" type="submit" class="btn btn-success">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog --> 
+  </div><!-- /.modal -->
+
+
+  <div id="editTarefasModal" class="modal fade">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <form action="" method="PUT" >
+            
+           
+
+                <h1 class="modal-title">Editar tarefa</h1>
+                
+                
+            </div>
+            <div class="modal-body">
+                
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                    @csrf
+                        <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
+                        <div>
+                            <select name="entidade" id="entidade">
+                            @foreach ($entidade_class as $data)
+                            <option value="{{$data->idEntidade}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                        </div>
+                    </div>
+                
+                    <input type="hidden" name="_token" value="">
+                    <div class="form-group">
+                        <label class="control-label">Tipo de Tarefa</label>
+                        <div>
+                        <select name="tipo_tarefa" id="tipo_tarefa" style="margin-right:10px;">
+                            @foreach ($tipo_class as $data)
+                            <option value="{{$data->idtipo_tarefa}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                    </div><label for="username">Data do Inicio da Tarefa</label>
+                      <div>
+                      
+                            <div class='input-group datetime' name="datetimepicker6" id='datetimepicker6'  >
+                                <input type='datetime' class="form-control" placeholder="data inicial" name="datetimepicker6" id="datetimepicker6"  />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                </div><label for="username">Data do Fim da Tarefa</label>
+                                <div class="form-group">
+                            <div class='input-group datetime' name="datetimepicker7" id='datetimepicker7'>
+                                <input type='datetime' class="form-control" placeholder="data final" name="datetimepicker7" id="datetimepicker7"/>
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                              </div>
+                          </div>
+                      </div>
+         
+                    <div class="form-group">
+                        <label class="control-label">Observações</label>
+                        <div>
+                          <textarea class="form-control" name="observacoes" rows="3"></textarea>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                        
+                            <button href="tarefas/edit" type="submit" class="btn btn-success">
                                 Register
                             </button>
                         </div>

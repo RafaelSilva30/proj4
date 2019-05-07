@@ -20,7 +20,19 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/testhome', 'HomeController@test')->name('testhome');
 
-Route::resource('tarefas','TarefasController');
+
 Route::get('/tarefas', 'TarefasController@index')->name('tarefas');
 Route::post('/tarefas', 'TarefasController@store');
 
+//Route::resource('tarefas','TarefasController');
+
+
+Route::get('tarefas/delete/{id}','TarefasController@destroy');
+
+Route::get('tarefas/edit/{id}','TarefasController@edit');
+//Route::post('tarefas/update/{id}','TarefasController@update');
+
+Route::patch('/tarefas/{id}',[
+    'as' => 'tarefas.update',
+    'uses' => 'TarefasController@update'
+]);

@@ -15,7 +15,9 @@
   <!-- DataTables -->
   <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
-
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
+  
+  
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -199,6 +201,8 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
+<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript" src="../../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
   <link rel="stylesheet" href="../../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <!-- page script -->
@@ -216,13 +220,41 @@
   })
 </script>
 
+
+
+<script>
+
+    $('#editTarefasModal').on('show.bs.modal', function (event) {
+      console.log('modal open');
+      var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var entidade = button.data('myentidade')
+      var tipotarefa = button.data('tipotarefa')
+      var dataini = "2019-05-07 16:45:18"
+      var datafinal = "2019-03-07 16:45:18"
+      var obs = button.data('observacao')
+      var id = button.data('id');
+      
+      var modal = $(this)
+
+      modal.find('.modal-body #entidade').val(entidade)
+      modal.find('.modal-body #tipo_tarefa').val(tipotarefa)
+      modal.find('.modal-body #datetimepicker6').val(dataini)
+      modal.find('.modal-body #datetimepicker7').val(datafinal)
+      modal.find('.modal-body #obs').val(obs)
+      modal.find('.modal-body #id').val(id)
+      
+    })
+
+</script>
+
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker6').datetimepicker({ 
           locale: 'pt',
           });
         $('#datetimepicker7').datetimepicker({
-          
             locale: 'pt',
         });
 

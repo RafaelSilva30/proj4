@@ -18,7 +18,7 @@ class TarefasController extends Controller
         $dataatual = Carbon::now()->addMonths(1);
         echo("<script>console.log('PHP: ".Carbon::now()->subDays(0)."');</script>");
  
-         $tarefas = DB::table('tarefas')->get();
+         $tarefas = tarefas::all();
          
      
          // erro, falta condição para filtrar as datas
@@ -77,9 +77,9 @@ class TarefasController extends Controller
      * @param  \App\tarefas  $tarefas
      * @return \Illuminate\Http\Response
      */
-    public function show(tarefas $tarefas)
+    public function show($id)
     {
-  
+        return tarefas::find($id);
     }
 
     /**
@@ -88,9 +88,10 @@ class TarefasController extends Controller
      * @param  \App\tarefas  $tarefas
      * @return \Illuminate\Http\Response
      */
-    public function edit(tarefas $tarefas)
+    public function edit($id)
     {
-        //
+        $tarefa = tarefas::find($id);
+        return view('/tarefas_edit',compact('tarefa'));
     }
 
     /**
@@ -100,9 +101,16 @@ class TarefasController extends Controller
      * @param  \App\tarefas  $tarefas
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, tarefas $tarefas)
+    public function update(Request $request)
     {
-        //
+       $tarefa = tarefas::findOrFail($request->idtarefas);
+
+        $tarefa->entidade = $request->entidade;
+        $tarefa->tipo_tarefa_idtipo_tarefa = $request->tipo_tarefa;
+        $tarefa->data_inicio = $request->datetimepicker6;
+        $tarefa->data_fim = $request->datetimepicker7;
+        $tarefa->observacao = $request->observacoes;
+        $tarefa->save();
     }
 
     /**
@@ -111,8 +119,9 @@ class TarefasController extends Controller
      * @param  \App\tarefas  $tarefas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(tarefas $tarefas)
+    public function destroy($id)
     {
-        //
+        tarefas::destroy($id);
+        return redirect('/tarefas');
     }
 }

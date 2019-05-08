@@ -1,6 +1,7 @@
 @extends('layouts.main')
 @section('content')
 
+
 <style type="text/css" media="Screen">
 object:hover, object.hover {
   color:#006400;
@@ -10,6 +11,9 @@ object {
   color: #4BB543;
 }
 </style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
 <section class="content-header">
       <h1>
        Tarefas
@@ -29,7 +33,7 @@ object {
                 <thead>
                 <tr>
                   <th>Id Tarefa</th>
-                  <th>Id Utilizador</th>
+                  <th>Nome do Utilizador</th>
                   <th>Data Inicio</th>
                   <th>Data Fim</th>
                   <th>Observações</th>
@@ -48,12 +52,68 @@ object {
                         
                                 <tr>
                                 <td>{{$tarefa->idtarefas}}</td>
-                                <td>{{$tarefa->id_utilizador}}</td>
+
+                                <?php 
+                                        
+                                        $connect = mysqli_connect("localhost","root","","p4");
+
+                                        if($connect->connect_error){
+                                            die("connection failed:".$connect->connect_error);
+                                        }
+                                        $auxiliar = $tarefa->id_utilizador;
+
+                                        $query = "SELECT name from users where $auxiliar = id";
+                                        $result = $connect->query($query);
+
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<td>". $row['name']. "</td>" ;
+                                        }
+                                        //echo("<script>console.log('PHP: ".$result."');</script>");
+                                        //echo "<td> $result </td>";
+                                ?>
+
                                 <td>{{$tarefa->data_inicio}}</td>
                                 <td>{{$tarefa->data_fim}}</td>
                                 <td>{{$tarefa->observacao}}</td>
-                                <td>{{$tarefa->entidade}}</td>
-                                <td>{{$tarefa->tipo_tarefa_idtipo_tarefa}}</td>
+                                        
+                                <?php 
+                                        
+                                        $connect = mysqli_connect("localhost","root","","p4");
+
+                                        if($connect->connect_error){
+                                            die("connection failed:".$connect->connect_error);
+                                        }
+                                        $auxiliar = $tarefa->entidade;
+
+                                        $query = "SELECT nome from entidade where $auxiliar = idEntidade";
+                                        $result = $connect->query($query);
+
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<td>". $row['nome']. "</td>" ;
+                                        }
+                                        //echo("<script>console.log('PHP: ".$result."');</script>");
+                                        //echo "<td> $result </td>";
+                                ?>
+
+                                <?php 
+                                        header('Content-Type: text/html; charset=utf-8');
+                                        $connect = mysqli_connect("localhost","root","","p4");
+
+                                        if($connect->connect_error){
+                                            die("connection failed:".$connect->connect_error);
+                                        }
+                                        $auxiliar = $tarefa->tipo_tarefa_idtipo_tarefa;
+
+                                        $query = "SELECT nome from tipo_tarefa where $auxiliar = idtipo_tarefa";
+                                        $result = $connect->query($query);
+
+                                        while ($row = $result->fetch_assoc()) {
+                                            echo "<td>". $row['nome']. "</td>" ;
+                                        }
+                                        //echo("<script>console.log('PHP: ".$result."');</script>");
+                                        //echo "<td> $result </td>";
+                                ?>   
+
                                 <td >  <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
 
 

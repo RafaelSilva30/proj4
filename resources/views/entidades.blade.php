@@ -52,7 +52,46 @@ object {
               <td>{{$entidade->nome}}</td>
               <td>{{$entidade->contacto}}</td>
               <td>{{$entidade->email}}</td>
-              <td>{{$entidade->programa}}</td>
+
+              <?php 
+              
+              $connect = mysqli_connect("localhost","root","","p4");
+
+              if($connect->connect_error){
+                die("connection failed:".$connect->connect_error);
+              }
+              $auxiliar = $entidade->programa;
+
+              $query = "SELECT nome from programa where $auxiliar = idprograma";
+              $result = $connect->query($query);
+
+              while ($row = $result->fetch_assoc()) {
+                echo "<td>". $row['nome']. "</td>" ;
+              }
+              //echo("<script>console.log('PHP: ".$result."');</script>");
+              //echo "<td> $result </td>";
+              ?>
+
+              <?php 
+              
+              $connect = mysqli_connect("localhost","root","","p4");
+
+              if($connect->connect_error){
+                die("connection failed:".$connect->connect_error);
+              }
+              $auxiliar = $entidade->contabilista;
+
+              $query = "SELECT nome from contabilista where $auxiliar = idcontabilista";
+              $result = $connect->query($query);
+
+              while ($row = $result->fetch_assoc()) {
+                echo "<td>". $row['nome']. "</td>" ;
+              }
+              //echo("<script>console.log('PHP: ".$result."');</script>");
+              //echo "<td> $result </td>";
+              ?>
+
+
               <td>{{$entidade->contabilista}}</td>
               <td>{{$entidade->validade_contrato}}</td>
               <td>{{$entidade->contacto_contabilista}}</td>

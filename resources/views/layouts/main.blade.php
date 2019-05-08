@@ -147,7 +147,7 @@
         </li>
 
         <li class="treeview">
-        <li> <a href="{{route('testhome')}}"><i class="fa fa-users"></i></i> <span>Entidades</span></li>
+        <li> <a href="{{route('Entidades')}}"><i class="fa fa-users"></i></i> <span>Entidades</span></li>
             <span class="pull-right-container" >
             </span>
           </a>

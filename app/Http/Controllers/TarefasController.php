@@ -42,7 +42,7 @@ class TarefasController extends Controller
      */
     public function create()
     {
-
+        
     }
 
     /**
@@ -69,6 +69,8 @@ class TarefasController extends Controller
         $tarefas->tipo_tarefa_idtipo_tarefa = $tipotarefa;
         $tarefas->observacao = $request->observacoes;
         $tarefas->save();
+
+        return redirect('/tarefas');
     }
 
     /**

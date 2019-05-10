@@ -112,6 +112,9 @@ object {
                                         }
                                         //echo("<script>console.log('PHP: ".$result."');</script>");
                                         //echo "<td> $result </td>";
+
+                                        $query = "SELECT idEntidade from tarefas";
+                                        $result = $query;
                                 ?>   
 
                                 <td >  <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
@@ -194,6 +197,7 @@ object {
                               </div>
                           </div>
                       </div>
+
          
                     <div class="form-group">
                         <label class="control-label">Observações</label>
@@ -260,14 +264,14 @@ object {
                     </div><label for="username">Data do Inicio da Tarefa</label>
                       <div>
                       
-                            <div class='input-group datetime' name="datetimepicker6" id='datetimepicker6'  >
-                                <input type='datetime' class="form-control" value="{{$tarefa->data_inicio}}" name="datetimepicker6" id="datetimepicker6"  />
+                            <div class='input-group datetime' name="datetimepicker6" id="datetimepicker6"  >
+                                <input type='datetime' class="form-control" value="{{$tarefa->data_ini}}" name="datetimepicker6" id="datetimepicker6"  />
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
                                 </div><label for="username">Data do Fim da Tarefa</label>
                                 <div class="form-group">
-                            <div class='input-group datetime' name="datetimepicker7" id='datetimepicker7'>
+                            <div class='input-group datetime' name="datetimepicker7" id="datetimepicker7" >
                                 <input type='datetime' class="form-control" value="{{$tarefa->data_fim}}" name="datetimepicker7" id="datetimepicker7"/>
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>

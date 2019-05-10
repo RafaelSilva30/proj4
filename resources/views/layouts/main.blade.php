@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Proj4</title>
+  
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -16,8 +17,17 @@
   <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
-  
-  
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
+
+</head>
+
+</head>
   <!-- Theme style -->
   <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -147,7 +157,7 @@
         </li>
 
         <li class="treeview">
-        <li> <a href="{{route('Entidades')}}"><i class="fa fa-users"></i></i> <span>Entidades</span></li>
+        <li> <a href="{{route('entidade')}}"><i class="fa fa-users"></i></i> <span>Entidades</span></li>
             <span class="pull-right-container" >
             </span>
           </a>
@@ -179,10 +189,7 @@
 
 <!-- jQuery 3 
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script> -->
-<script
-  src="https://code.jquery.com/jquery-3.4.0.min.js"
-  integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg="
-  crossorigin="anonymous"></script>
+
 
   <script src="./../bower_components/moment/min/moment.min.js"></script>
   <script src="./../bower_components/moment/locale/pt.js"></script>
@@ -231,8 +238,8 @@
       // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
       var entidade = button.data('myentidade')
       var tipotarefa = button.data('tipotarefa')
-      var dataini = "2019-05-07 16:45:18"
-      var datafinal = "2019-03-07 16:45:18"
+      var dataini = button.data('dataini')
+      var datafinal = button.data('datafim')
       var obs = button.data('observacao')
       var id = button.data('id');
       
@@ -253,11 +260,16 @@
     $(function () {
         $('#datetimepicker6').datetimepicker({ 
           locale: 'pt',
+          format:'YYYY-MM-DD HH:mm:ss',
           });
         $('#datetimepicker7').datetimepicker({
+          format:'YYYY-MM-DD HH:mm:ss',
             locale: 'pt',
         });
+        $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+        $('.datepicker').datepicker({
 
+        });
         $("body").on("dp.change", "#datetimepicker6", function (e) {
             $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
         });

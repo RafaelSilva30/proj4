@@ -63,8 +63,8 @@ class TarefasController extends Controller
 
         $tarefas = new tarefas;
         $tarefas->id_utilizador = $user->id;
-        $tarefas->data_inicio = Carbon::parse($request->dateaatimepicker6);
-        $tarefas->data_fim = Carbon::parse($request->datetaaimepicker7);
+        $tarefas->data_inicio = $request->datetimepicker6;
+        $tarefas->data_fim = $request->datetimepicker7;
         $tarefas->entidade = $entidade;
         $tarefas->tipo_tarefa_idtipo_tarefa = $tipotarefa;
         $tarefas->observacao = $request->observacoes;
@@ -113,6 +113,7 @@ class TarefasController extends Controller
         $tarefa->data_fim = $request->datetimepicker7;
         $tarefa->observacao = $request->observacoes;
         $tarefa->save();
+        
     }
 
     /**

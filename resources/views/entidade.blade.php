@@ -89,17 +89,20 @@ object {
               }
               //echo("<script>console.log('PHP: ".$result."');</script>");
               //echo "<td> $result </td>";
+              $query = "SELECT idEntidade from tarefas";
+              $result = $query;
+              
               ?>
 
-
-              <td>{{$entidade->contabilista}}</td>
               <td>{{$entidade->validade_contrato}}</td>
               <td>{{$entidade->contacto_contabilista}}</td>
               <td>{{$entidade->observacoes}}</td>
-               <td >  <button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button>
+              <td > <a href="entidades/delete/{{$entidade->idEntidade}}"> <button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button>
               </tr>
                 @endforeach
-            
+
+                
+
                 </tbody>
               </table>
 
@@ -112,57 +115,86 @@ object {
 
       <div id="entidadesModal" tabindex ="-1" class="modal fade">
     <div class="modal-dialog" role="document" >
-    
+    <form method="POST" action="/entidade">
         <div class="modal-content">
        
             <div class="modal-header">
-           
-            <form action="{{route('tarefas.update','test')}}" method="POST" id="editForm">
-            {{ method_field('patch') }}
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
-            <h1 class="modal-title">Adicionar </h1>
+            <h1 class="modal-title">Adicionar uma nova Entidade </h1>
             
 
             </div>
             <div class="modal-body">
-
-                      <div class="form-group">                    
-                        <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
+            <div class="form-group">          
+                  
+              <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
+            <div>
+              <input type="text" name="name" id="nome" >
+              </div>
+            </div>
+            <label class="control-label" style="margin-right:18px;" >Indique o Distrito</label>
+                        <label class="control-label" style="margin-right:18px;" >Indique o Concelho</label>
                         <div>
-                          <input type="text" id="name" name="name" >
+                            <select name="distrito">
+                            @foreach ($distrito_class as $data)
+                            <option value="{{$data->iddistrito}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+
+                            <select name="concelho">
+                            @foreach ($concelho_class as $data)
+                            <option value="{{$data->idconcelho}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
                         </div>
-                      </div>
-                
+                        <p> </p>
                       <div class="form-group">                    
                         <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico da Entidade</label>
                         <div>
                           <input type="text" id="contacto" name="contacto" >
-                        </div>´
-
+                        </div>
                       <div class="form-group">                    
                       <label class="control-label" style="margin-right:18px;" >Indique o email da Entidade</label>
                       <div>
                         <input type="text" id="email" name="email" >
                       </div>
-
                       <label >Validade do Contrato</label>
                       <div>
-                          <div class='input-group datetime' name="datetimepicker6" id='datetimepicker6'  >
-                            <input type='datetime' class="form-control" name="datetimepicker6" id="datetimepicker6"  />
-                              <span class="input-group-addon">
-                              <span class="glyphicon glyphicon-calendar"></span>
-                              </span>
+                        <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" input class="datepicker" name ="datepicker" data-date-format="mm/dd/yyyy">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>  
+                              </div>
+
+                        <label class="control-label" style="margin-right:18px;" >Indique o contabilista</label>
+                        <div>
+                            <select name="contabilista">
+                            @foreach ($contabilista_class as $data)
+                            <option value="{{$data->idcontabilista}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
                         </div>
 
                         <div class="form-group">                    
                         <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico do contabilista</label>
                         <div>
                           <input type="text" id="contactocontabilista" name="contactocontabilista" >
-                        </div>´
+                        </div>
 
-         
+                        <label class="control-label" style="margin-right:18px;" >Indique o programa</label>
+                        <div>
+                            <select name="programa">
+                            @foreach ($programa_class as $data)
+                            <option value="{{$data->idprograma}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                        </div>
+
+
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
@@ -172,7 +204,7 @@ object {
                     <div class="form-group">
                         <div>
                         
-                            <button href="tarefas/update" type="submit" class="btn btn-success">
+                            <button href="entidade/create" type="submit" class="btn btn-success">
                                 Register
                             </button>
                         </div>

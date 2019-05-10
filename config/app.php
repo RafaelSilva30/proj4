@@ -162,7 +162,11 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\DynamicEntityName::class,
+        App\Providers\DynamicDistrito::class,
+        App\Providers\DynamicConcelho::class,
+        App\Providers\DynamicContabilista::class,
         App\Providers\DynamicTaskType::class,
+        App\Providers\DynamicPrograma::class,
         /*
          * Package Service Providers...
          */

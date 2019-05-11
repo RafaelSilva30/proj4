@@ -89,29 +89,67 @@ object {
               }
               //echo("<script>console.log('PHP: ".$result."');</script>");
               //echo "<td> $result </td>";
-              $query = "SELECT idEntidade from tarefas";
+              $query = "SELECT entidade from tarefas";
               $result = $query;
               
+              $query2 = "SELECT entidades.idEntidade from entidades,tarefas WHERE entidades.idEntidade=tarefas.entidade";
+              $result2 = $connect->query($query2);
+              
+              $row2 = $result2->fetch_assoc();
+              
               //VARIAVEL AUX 1 OU 0 PARA CRIAR BOTÃO OU NÃO
-              ?>
 
+
+              ?>
+               
               <td>{{$entidade->validade_contrato}}</td>
               <td>{{$entidade->contacto_contabilista}}</td>
               <td>{{$entidade->observacoes}}</td>
+              <?php 
+            $sapo = 0 ;
+
+            $row2 = $result2->fetch_assoc();
+              ?>
               
-              @foreach($data2 as $tarefa)
-              @if ($tarefa->entidade == $entidade->idEntidade)
-              
-                @else   
-                <td >  <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-              
+             
+
+              @while($row2 = $result2->fetch_assoc())
+               @if(($row2['idEntidade'] == $entidade->idEntidade))
+              <?php 
+                  $sapo = 1 ;
+               ?>
+
               @endif
-              @endforeach
+              
+                @if(($row2['idEntidade'] == $entidade->idEntidade) && $sapo == 0)
+       
+               <?php 
+                  $sapo = 1 ;
+               ?>
+               
+                @else
+               
+                <td ><a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
+                @endif
+
+              @endwhile
+
+              <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
+              data-id="{{$entidade->idEntidade}}"
+              data-nome="{{$entidade->nome}}"
+              data-distrito="{{$entidade->distrito}}"
+              data-concelho="{{$entidade->concelho}}"
+              data-contacto="{{$entidade->contacto}}"
+              data-email="{{$entidade->email}}"
+              data-datacontrato="{{$entidade->validade_contrato}}"
+              data-contabilista="{{$entidade->contabilista}}"
+              data-contactocontabilista="{{$entidade->contacto_contabilista}}"
+              data-programa="{{$entidade->programa}}"
+              data-observacoes="{{$entidade->observacoes}}"
+               data-target="#editEntidadesModal" ><i class="fa fa-edit fa"></i></td>
+              
               </tr>
                 @endforeach
-
-                
-
                 </tbody>
               </table>
 
@@ -122,7 +160,7 @@ object {
         <!-- /.col -->
       </div>
 
-      <div id="entidadesModal" tabindex ="-1" class="modal fade">
+      <div id="entidadesModal"  class="modal fade">
     <div class="modal-dialog" role="document" >
     <form method="POST" action="/entidade">
         <div class="modal-content">
@@ -131,7 +169,7 @@ object {
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
-            <h1 class="modal-title">Adicionar uma nova Entidade </h1>
+            <h1 class="modal-title">Adicionar uma nova Enaaatidade </h1>
             
 
             </div>
@@ -146,13 +184,13 @@ object {
             <label class="control-label" style="margin-right:18px;" >Indique o Distrito</label>
                         <label class="control-label" style="margin-right:18px;" >Indique o Concelho</label>
                         <div>
-                            <select name="distrito">
+                            <select name="distrito" id="distrito">
                             @foreach ($distrito_class as $data)
                             <option value="{{$data->iddistrito}}" >{{$data->nome}}</option>
                             @endforeach 
                             </select>
 
-                            <select name="concelho">
+                            <select name="concelho" id="concelho">
                             @foreach ($concelho_class as $data)
                             <option value="{{$data->idconcelho}}" >{{$data->nome}}</option>
                             @endforeach 
@@ -224,5 +262,116 @@ object {
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog --> 
   </div><!-- /.modal -->
+
+</div>
+</div>
+</div>
+
+<div id="editEntidadesModal"  class="modal fade">
+    <div class="modal-dialog" role="document" >
+    <form action="{{route('entidades.update','test')}}" method="POST" id="editForm">
+            {{ method_field('patch') }}
+        <div class="modal-content">
+       
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            <h1 class="modal-title">Editar uma Entidade </h1>
+            
+
+            </div>
+            <div class="modal-body">
+            <div class="form-group">          
+                  
+              <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
+            <div>
+              <input type="text" name="name" id="nome" >
+              </div>
+            </div>
+            <label class="control-label" style="margin-right:18px;" >Indique o Distrito</label>
+                        <label class="control-label" style="margin-right:18px;" >Indique o Concelho</label>
+                        <div>
+                            <select name="distrito" id="distrito">
+                            @foreach ($distrito_class as $data)
+                            <option value="{{$data->iddistrito}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+
+                            <select name="concelho" id="concelho">
+                            @foreach ($concelho_class as $data)
+                            <option value="{{$data->idconcelho}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                        </div>
+                        <p> </p>
+                      <div class="form-group">                    
+                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico da Entidade</label>
+                        <div>
+                          <input type="text" id="contacto" name="contacto" >
+                        </div>
+                      <div class="form-group">                    
+                      <label class="control-label" style="margin-right:18px;" >Indique o email da Entidade</label>
+                      <div>
+                        <input type="text" id="email" name="email" >
+                      </div>
+                      <label >Validade do Contrato</label>
+                      <div>
+                        <div class="input-group date" data-provide="datepicker">
+                        <input type="text" class="form-control" input class="datepicker" name ="datepicker" id ="datepicker" data-date-format="mm/dd/yyyy">
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>  
+                              </div>
+
+                        <label class="control-label" style="margin-right:18px;" >Indique o contabilista</label>
+                        <div>
+                            <select name="contabilista" id="contabilista">
+                            @foreach ($contabilista_class as $data)
+                            <option value="{{$data->idcontabilista}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                        </div>
+
+                        <div class="form-group">                    
+                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico do contabilista</label>
+                        <div>
+                          <input type="text" id="contactocontabilista" name="contactocontabilista" >
+                        </div>
+
+                        <label class="control-label" style="margin-right:18px;" >Indique o programa</label>
+                        <div>
+                            <select name="programa" id="programa">
+                            @foreach ($programa_class as $data)
+                            <option value="{{$data->idprograma}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                        </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label">Observações</label>
+                        <div>
+                          <textarea class="form-control" name="observacoes" id="obs" rows="3"></textarea>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                        <div>
+                        
+                            <button href="entidade/update" type="submit" class="btn btn-success">
+                                Register
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog --> 
+  </div><!-- /.modal -->
+
+
+
       </section>
 @endsection

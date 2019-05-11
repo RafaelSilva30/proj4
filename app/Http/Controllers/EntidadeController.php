@@ -105,11 +105,24 @@ class EntidadeController extends Controller
      * @param  \App\entidade  $entidade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, entidade $entidade)
-    {
-        //
-    }
 
+    public function update(Request $request)
+    {
+       $entidade = entidade::findOrFail($request->idEntidade);
+
+        $entidade->entidade = $request->nome;
+        $entidade->contacto = $request->contacto;
+        $entidade->email = $request->email;
+        $entidade->validade_contrato = $request->datepicker;
+        $entidade->observacoes = $request->obs;
+        $entidade->contabilista = $request->contabilista;
+        $entidade->contacto_contabilista = $request->obs;
+        $entidade->concelho = $request->concelho;
+        $entidade->distrito = $request->distrito;
+        $entidade->programa = $request->programa;
+        $entidade->save();
+        
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -123,11 +136,13 @@ class EntidadeController extends Controller
             return redirect('/entidade');
 
         }catch(\Illuminate\Database\QueryException $ex){ 
-            
-          
+         return "<h1> OH BURRO DO crl";   
+         ;
         }
         
     }
 
+
+   
     
 }

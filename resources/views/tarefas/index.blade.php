@@ -243,7 +243,7 @@ object {
                     
                         <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
                         <div>
-                            <select name="entidades" id="entidades">
+                            <select name="entidades" id="entidade">
                             @foreach ($nome_entidades as $data)
                             <option value="{{$data->idEntidade}}" >{{$data->nome}}</option>
                             @endforeach 

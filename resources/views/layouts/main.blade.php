@@ -255,7 +255,59 @@
     })
 
 </script>
+<script>
 
+$('#editEntidadesModal').on('show.bs.modal', function (event) {
+  console.log('modal open');
+  var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  
+
+  var nome = button.data('nome')
+      var distrito = button.data('distrito')
+      var concelho = button.data('concelho')
+      var contacto = button.data('contacto')
+      var email = button.data('email')
+      var datacontrato = button.data('datacontrato');
+      var contabilista = button.data('contabilista');
+      var contactocontabilista = button.data('contactocontabilista');
+      var observacoes = button.data('observacoes');
+      var id = button.data('id');
+      
+      var modal = $(this)
+
+      modal.find('.modal-body #nome').val(nome)
+      modal.find('.modal-body #distrito').val(distrito)
+      modal.find('.modal-body #concelho').val(concelho)
+      modal.find('.modal-body #contacto').val(contacto)
+      modal.find('.modal-body #email').val(email)
+      modal.find('.modal-body #datepicker').val(datacontrato)
+      modal.find('.modal-body #contabilista').val(contabilista)
+      modal.find('.modal-body #contactocontabilista').val(contactocontabilista)
+      modal.find('.modal-body #obs').val(observacoes)
+      modal.find('.modal-body #id').val(id)
+
+
+
+})
+
+</script>
+
+
+
+
+
+
+<script>
+
+$(function(){
+ $('btn_edit').click(function() {
+   $('#timePopup').modal('show');
+ });
+});
+
+</script>
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker6').datetimepicker({ 
@@ -269,7 +321,10 @@
         $.fn.datepicker.defaults.format = "yyyy-mm-dd";
         $('.datepicker').datepicker({
 
-        });
+        }).on('hide', function(e) {
+        e.stopPropagation();
+      });
+
         $("body").on("dp.change", "#datetimepicker6", function (e) {
             $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
         });

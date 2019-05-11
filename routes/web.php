@@ -22,6 +22,10 @@ Route::get('/entidade', 'EntidadeController@index')->name('entidade');
 Route::post('/entidade', 'EntidadeController@store');
 Route::get('/entidades/delete/{id}','EntidadeController@destroy');
 
+Route::patch('/entidade/{id}',[
+    'as' => 'entidades.update',
+    'uses' => 'EntidadeController@update'
+]);
 Route::get('/tarefas', 'TarefasController@index')->name('tarefas');
 Route::post('/tarefas', 'TarefasController@store');
 
@@ -37,3 +41,5 @@ Route::patch('/tarefas/{id}',[
     'as' => 'tarefas.update',
     'uses' => 'TarefasController@update'
 ]);
+
+

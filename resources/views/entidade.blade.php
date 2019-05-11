@@ -92,12 +92,21 @@ object {
               $query = "SELECT idEntidade from tarefas";
               $result = $query;
               
+              //VARIAVEL AUX 1 OU 0 PARA CRIAR BOTÃO OU NÃO
               ?>
 
               <td>{{$entidade->validade_contrato}}</td>
               <td>{{$entidade->contacto_contabilista}}</td>
               <td>{{$entidade->observacoes}}</td>
-              <td > <a href="entidades/delete/{{$entidade->idEntidade}}"> <button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button>
+              
+              @foreach($data2 as $tarefa)
+              @if ($tarefa->entidade == $entidade->idEntidade)
+              
+                @else   
+                <td >  <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
+              
+              @endif
+              @endforeach
               </tr>
                 @endforeach
 

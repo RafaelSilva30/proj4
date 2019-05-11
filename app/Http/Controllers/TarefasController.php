@@ -57,7 +57,7 @@ class TarefasController extends Controller
         $user = auth()->user();
 
 
-        $entidade =  $request->get('entidade');
+        $sapo =  $request->get('entidades');
         $tipotarefa = $request->get('tipo_tarefa');
         
 
@@ -65,7 +65,7 @@ class TarefasController extends Controller
         $tarefas->id_utilizador = $user->id;
         $tarefas->data_inicio = $request->datetimepicker6;
         $tarefas->data_fim = $request->datetimepicker7;
-        $tarefas->entidade = $entidade;
+        $tarefas->entidade = $sapo;
         $tarefas->tipo_tarefa_idtipo_tarefa = $tipotarefa;
         $tarefas->observacao = $request->observacoes;
         $tarefas->save();
@@ -107,7 +107,7 @@ class TarefasController extends Controller
     {
        $tarefa = tarefas::findOrFail($request->idtarefas);
 
-        $tarefa->entidade = $request->entidade;
+        $tarefa->entidade = $request->entidades;
         $tarefa->tipo_tarefa_idtipo_tarefa = $request->tipo_tarefa;
         $tarefa->data_inicio = $request->datetimepicker6;
         $tarefa->data_fim = $request->datetimepicker7;

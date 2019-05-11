@@ -12,7 +12,7 @@ object {
 }
 </style>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <section class="content-header">
       <h1>
@@ -85,9 +85,8 @@ object {
                                         }
                                         $auxiliar = $tarefa->entidade;
 
-                                        $query = "SELECT nome from entidade where $auxiliar = idEntidade";
+                                        $query = "SELECT nome from entidades where $auxiliar = idEntidade";
                                         $result = $connect->query($query);
-
                                         while ($row = $result->fetch_assoc()) {
                                             echo "<td>". $row['nome']. "</td>" ;
                                         }
@@ -162,8 +161,8 @@ object {
                     @csrf
                         <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
                         <div>
-                            <select name="entidade">
-                            @foreach ($entidade_class as $data)
+                            <select name="entidades">
+                            @foreach ($nome_entidades as $data)
                             <option value="{{$data->idEntidade}}" >{{$data->nome}}</option>
                             @endforeach 
                             </select>
@@ -244,8 +243,8 @@ object {
                     
                         <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
                         <div>
-                            <select name="entidade" id="entidade">
-                            @foreach ($entidade_class as $data)
+                            <select name="entidades" id="entidades">
+                            @foreach ($nome_entidades as $data)
                             <option value="{{$data->idEntidade}}" >{{$data->nome}}</option>
                             @endforeach 
                             </select>

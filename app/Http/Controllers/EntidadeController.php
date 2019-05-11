@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\entidade;
 use Illuminate\Http\Request;
 use DB;
@@ -16,18 +17,21 @@ class EntidadeController extends Controller
      */
     public function index()
     {
-        $entidade = entidade::all();
 
-        $data['data'] = DB::table('entidades')->get();
+        $data['data'] = entidade::all();
+
+        $data2['data2'] = DB::table('tarefas')->get();
+        //$data['data'] = DB::table('entidade')->get();
+       
         
         if(count($data) >0 ){
-            return view('entidade',$data);
+            return view('entidade',$data,$data2);
         }
         else{
             return view('entidade');
         }
 
-        return view('entidade.index')->with('entidade', $entidade   );
+        return view('entidade.index')->with('entidade', $data  );
         
     }
 
@@ -68,6 +72,8 @@ class EntidadeController extends Controller
         $data->contabilista = $contabilista;
         $data->programa = $programa;
         $data->save();
+
+
     }
 
     /**
@@ -117,7 +123,7 @@ class EntidadeController extends Controller
             return redirect('/entidade');
 
         }catch(\Illuminate\Database\QueryException $ex){ 
-           
+            
           
         }
         

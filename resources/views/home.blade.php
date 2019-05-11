@@ -15,6 +15,7 @@ object {
 
 </style>
 <section class="content-header">
+
       <h1>
         Tarefas
       </h1>
@@ -94,8 +95,8 @@ object {
                     @csrf
                         <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
                         <div>
-                            <select name="entidade" id="entidade">
-                            @foreach ($entidade_class as $data)
+                            <select name="entidades" id="entidades">
+                            @foreach ($nome_entidades as $data)
                             <option value="{{$data->idEntidade}}" >{{$data->nome}}</option>
                             @endforeach 
                             </select>

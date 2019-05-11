@@ -7,7 +7,7 @@ class DynamicEntityName extends ServiceProvider
     public function boot()
     {
         view()->composer('*',function($view){
-            $view->with('entidade_class',Dropdown_entidades::all());
+            $view->with('nome_entidades',Dropdown_entidades::all());
         });
     }
 }

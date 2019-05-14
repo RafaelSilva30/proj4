@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\contabilista;
-use Illuminate\Http\Request;
 
-class ContabilistaController extends Controller
+use App\programa;
+use Illuminate\Http\Request;
+use DB;
+
+
+class ProgramaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,14 +17,14 @@ class ContabilistaController extends Controller
      */
     public function index()
     {
-        $data3['data3'] = contabilista::all();
+        
+        $data2['data2'] = programa::all();
 
-         
-        if(count($data3) >0 ){
-            return view('contabilista',$data3);
+        if(count($data2) >0 ){
+            return view('programa',$data2);
         }
         else{
-            return view('contabilista');
+            return view('programa');
         }
     }
 
@@ -32,7 +35,7 @@ class ContabilistaController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -43,21 +46,20 @@ class ContabilistaController extends Controller
      */
     public function store(Request $request)
     {
-        $cont = new contabilista;
-        $cont->nome = $request->name;
-        $cont->contacto = $request->contact;
-        $cont->email = $request->email;
-        $cont->save();
-        return redirect('/contabilista');
+        $data = new programa;
+        $data->nome = $request->name;
+        $data->data_validade = $request->datepicker;
+        $data->save();
+        return redirect('/programa');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\programa  $programa
      * @return \Illuminate\Http\Response
      */
-    public function show(contabilista $contabilista)
+    public function show(programa $programa)
     {
         //
     }
@@ -65,10 +67,10 @@ class ContabilistaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\programa  $programa
      * @return \Illuminate\Http\Response
      */
-    public function edit(contabilista $contabilista)
+    public function edit(programa $programa)
     {
         //
     }
@@ -77,39 +79,38 @@ class ContabilistaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\programa  $programa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, contabilista $contabilista)
+    public function update(Request $request,$id)
     {
+
         
+
          
-        $cont = contabilista::findOrFail($request->id);
+        $programa = programa::findOrFail($request->id1);
 
-        $cont->nome = $request->name;
-        $cont->contacto = $request->contact;
-        $cont->email = $request->email;
-        $cont->save();  
+        $programa->nome = $request->name;
+        $programa->data_validade = $request->datetimepicker1;
 
-        return redirect('/contabilista');
-
+        $programa->save(); 
         
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\programa  $programa
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try{
-            contabilista::destroy($id);
-            return redirect('/contabilista');
+            programa::destroy($id);
+            return redirect('/programa');
 
         }catch(\Illuminate\Database\QueryException $ex){ 
-         return "<h1> ERRO O CONTABILISTA ESTÁ ASSOCIADA A UMA ENTIDADE";   
+         return "<h1> ERRO O PROGRAMA ESTÁ ASSOCIADA A UMA ENTIDADE";   
          ;
         }
     }

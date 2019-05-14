@@ -110,13 +110,13 @@ class EntidadeController extends Controller
     {
        $entidade = entidade::findOrFail($request->idEntidade);
 
-        $entidade->entidade = $request->nome;
+        $entidade->nome = $request->name;
         $entidade->contacto = $request->contacto;
         $entidade->email = $request->email;
-        $entidade->validade_contrato = $request->datepicker;
-        $entidade->observacoes = $request->obs;
+        $entidade->validade_contrato = $request->datetimepicker1;
+        $entidade->observacoes = $request->observacoes;
         $entidade->contabilista = $request->contabilista;
-        $entidade->contacto_contabilista = $request->obs;
+        $entidade->contacto_contabilista = $request->contactocontabilista;
         $entidade->concelho = $request->concelho;
         $entidade->distrito = $request->distrito;
         $entidade->programa = $request->programa;
@@ -136,7 +136,7 @@ class EntidadeController extends Controller
             return redirect('/entidade');
 
         }catch(\Illuminate\Database\QueryException $ex){ 
-         return "<h1> OH BURRO DO crl";   
+         return "<h1> ERRO A ENTIDADE ESTÁ ASSOCIADA A UMA TAREFA";   
          ;
         }
         

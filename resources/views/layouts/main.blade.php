@@ -25,6 +25,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
 
+
+
+
+
 </head>
 
 </head>
@@ -125,28 +129,19 @@
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
-      <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-        </div>
-      </form>
+      
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Tarefas</span>
+          <i class="fa fa-tasks" ></i><span>Tarefas</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
-          <ul class="treeview-menu">
+          <ul class="treeview-menu" style="display: block;">
             <li><a href="{{route('home')}}"><i class="fa fa-circle-o"></i> Consultar proximas tarefas</a></li>
             <li><a href="{{route('tarefas')}}"><i class="fa fa-circle-o"></i> Todas as Tarefas</a></li>
           </ul>
@@ -162,6 +157,20 @@
             </span>
           </a>
         </li>
+
+        <li class="treeview">
+        <li> <a href="{{route('programa')}}"><i class="fa fa-copyright" aria-hidden="true"></i> <span>Programas</span></li>
+            <span class="pull-right-container" >
+            </span>
+          </a>
+        </li>
+        <li class="treeview">
+        <li> <a href="{{route('contabilista')}}"><i class="fa fa-eur" aria-hidden="true"></i> <span>Contabilista</span></li>
+            <span class="pull-right-container" >
+            </span>
+          </a>
+        </li>
+
         </ul>
     </section>
     <!-- /.sidebar -->
@@ -282,10 +291,10 @@ $('#editEntidadesModal').on('show.bs.modal', function (event) {
       modal.find('.modal-body #concelho').val(concelho)
       modal.find('.modal-body #contacto').val(contacto)
       modal.find('.modal-body #email').val(email)
-      modal.find('.modal-body #datepicker').val(datacontrato)
+      modal.find('.modal-body #datetimepicker1').val(datacontrato)
       modal.find('.modal-body #contabilista').val(contabilista)
       modal.find('.modal-body #contactocontabilista').val(contactocontabilista)
-      modal.find('.modal-body #obs').val(observacoes)
+      modal.find('.modal-body #observacoes').val(observacoes)
       modal.find('.modal-body #id').val(id)
 
 
@@ -295,7 +304,52 @@ $('#editEntidadesModal').on('show.bs.modal', function (event) {
 </script>
 
 
+<script>
 
+    $('#editProgramaModal').on('show.bs.modal', function (event) {
+      console.log('modal open');
+      var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+     
+      
+      var id = button.data('id1');
+      var nome = button.data('nome');
+      var data_val = button.data('data_validade');
+      
+      var modal = $(this)
+      modal.find('.modal-body #datetimepicker1').val(data_val)
+      modal.find('.modal-body #id1').val(id_programa)
+      modal.find('.modal-body #nome').val(nome)
+   
+    })
+
+</script>
+
+
+<script>
+
+    $('#editarContabilista').on('show.bs.modal', function (event) {
+      console.log('modal open');
+      var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+       var id_programa = button.data('id');
+      var nome = button.data('nome');
+      var contacto = button.data('contacto');
+      var email = button.data('email');
+      
+      var modal = $(this)
+      modal.find('.modal-body #id').val(id_programa)
+      modal.find('.modal-body #nome').val(nome)
+      modal.find('.modal-body #contacto').val(contacto)
+      modal.find('.modal-body #email').val(email)
+      
+
+   
+    })
+
+</script>
 
 
 
@@ -325,6 +379,13 @@ $(function(){
         e.stopPropagation();
       });
 
+      $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+        $('.datepicker1').datepicker({
+
+        }).on('hide', function(e) {
+        e.stopPropagation();
+      });
+
         $("body").on("dp.change", "#datetimepicker6", function (e) {
             $('#datetimepicker7').data("DateTimePicker").minDate(e.date);
         });
@@ -332,7 +393,14 @@ $(function(){
         $("body").on("dp.change", "#datetimepicker7", function (e) {
             $('#datetimepicker6').data("DateTimePicker").maxDate(e.date);
         });
+
+
+        $('#datetimepicker1').datetimepicker();
+
     });
 </script>
+
+
+
 </body>
 </html>

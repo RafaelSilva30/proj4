@@ -14,7 +14,15 @@ class ContabilistaController extends Controller
      */
     public function index()
     {
-        //
+        $data3['data3'] = contabilista::all();
+
+         
+        if(count($data3) >0 ){
+            return view('contabilista',$data3);
+        }
+        else{
+            return view('contabilista');
+        }
     }
 
     /**
@@ -35,7 +43,12 @@ class ContabilistaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cont = new contabilista;
+        $cont->nome = $request->name;
+        $cont->contacto = $request->contact;
+        $cont->email = $request->email;
+        $cont->save();
+        return redirect('/contabilista');
     }
 
     /**
@@ -69,7 +82,18 @@ class ContabilistaController extends Controller
      */
     public function update(Request $request, contabilista $contabilista)
     {
-        //
+        
+         
+        $cont = contabilista::findOrFail($request->id);
+
+        $cont->nome = $request->name;
+        $cont->contacto = $request->contact;
+        $cont->email = $request->email;
+        $cont->save();  
+
+        return redirect('/contabilista');
+
+        
     }
 
     /**
@@ -78,8 +102,15 @@ class ContabilistaController extends Controller
      * @param  \App\contabilista  $contabilista
      * @return \Illuminate\Http\Response
      */
-    public function destroy(contabilista $contabilista)
+    public function destroy($id)
     {
-        //
+        try{
+            contabilista::destroy($id);
+            return redirect('/contabilista');
+
+        }catch(\Illuminate\Database\QueryException $ex){ 
+         return "<h1> ERRO O CONTABILISTA ESTÁ ASSOCIADA A UMA ENTIDADE";   
+         ;
+        }
     }
 }

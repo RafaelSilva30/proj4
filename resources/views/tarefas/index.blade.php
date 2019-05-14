@@ -282,7 +282,7 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" id="obs" rows="3">{{$tarefa->observacao}}</textarea>
+                          <textarea class="form-control" name="observacoes" id="obs" rows="3"></textarea>
                           </div>
                     </div>
                     <div class="form-group">

@@ -62,7 +62,7 @@ object {
               }
               $auxiliar = $entidade->programa;
 
-              $query = "SELECT nome from programa where $auxiliar = idprograma";
+              $query = "SELECT nome from programas where $auxiliar = idprograma";
               $result = $connect->query($query);
 
               while ($row = $result->fetch_assoc()) {
@@ -81,7 +81,7 @@ object {
               }
               $auxiliar = $entidade->contabilista;
 
-              $query = "SELECT nome from contabilista where $auxiliar = idcontabilista";
+              $query = "SELECT nome from contabilistas where $auxiliar = idcontabilista";
               $result = $connect->query($query);
 
               while ($row = $result->fetch_assoc()) {
@@ -113,7 +113,7 @@ object {
               
              
 
-              @while($row2 = $result2->fetch_assoc())
+             
                @if(($row2['idEntidade'] == $entidade->idEntidade))
               <?php 
                   $sapo = 1 ;
@@ -132,7 +132,6 @@ object {
                 <td ><a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
                 @endif
 
-              @endwhile
 
               <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
               data-id="{{$entidade->idEntidade}}"
@@ -169,7 +168,7 @@ object {
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
-            <h1 class="modal-title">Adicionar uma nova Enaaatidade </h1>
+            <h1 class="modal-title">Adicionar uma nova Entidade </h1>
             
 
             </div>
@@ -269,7 +268,7 @@ object {
 
 <div id="editEntidadesModal"  class="modal fade">
     <div class="modal-dialog" role="document" >
-    <form action="{{route('entidades.update','test')}}" method="POST" id="editForm">
+    <form action="{{route('entidade.update','test')}}" method="POST" id="editForm">
             {{ method_field('patch') }}
         <div class="modal-content">
        
@@ -283,7 +282,7 @@ object {
             </div>
             <div class="modal-body">
             <div class="form-group">          
-                  
+            <input type="hidden" name="idEntidade" id="id" value="">
               <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
             <div>
               <input type="text" name="name" id="nome" >
@@ -315,15 +314,11 @@ object {
                       <div>
                         <input type="text" id="email" name="email" >
                       </div>
-                      <label >Validade do Contrato</label>
-                      <div>
-                        <div class="input-group date" data-provide="datepicker">
-                        <input type="text" class="form-control" input class="datepicker" name ="datepicker" id ="datepicker" data-date-format="mm/dd/yyyy">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-th"></span>
-                        </div>
-                    </div>  
-                              </div>
+                      <div class='input-group date' >
+                    <label>Validade do Contrato:</label>
+                    <input type='text' id='datetimepicker1' name='datetimepicker1' data-date-format="YYYY-MM-DD" class="form-control" />
+                    
+                  </div>
 
                         <label class="control-label" style="margin-right:18px;" >Indique o contabilista</label>
                         <div>
@@ -353,7 +348,7 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" id="obs" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" id="observacoes" rows="3"></textarea>
                           </div>
                     </div>
                     <div class="form-group">

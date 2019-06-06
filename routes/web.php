@@ -21,6 +21,8 @@ Route::patch('/registar/{id}',[
     'as' => 'registar.update',
     'uses' => 'RegistarController@update'
 ]); 
+Route::get('/permissao/edit/{id}', 'PermissoesController@edit');
+Route::post('/permissao/{id}', 'PermissoesController@update');
 //--------TAREFAS-------------//
 Route::get('/home', 'HomeController@index')->name('home');
 

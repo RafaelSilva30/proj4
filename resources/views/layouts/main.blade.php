@@ -427,6 +427,29 @@ $('#editEntidadesModal').on('show.bs.modal', function (event) {
 
 <script>
 
+    $('#editPermissoes').on('show.bs.modal', function (event) {
+      console.log('modal open');
+      var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+     
+      var id = button.data('id');
+      
+      
+      var modal = $(this)
+
+      
+      modal.find('.modal-body #id').val(id)
+
+
+
+   
+    })
+
+</script>
+
+<script>
+
 $('#editdistritoModal').on('show.bs.modal', function (event) {
   console.log('modal open');
   var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
@@ -561,6 +584,7 @@ $('#editUserModal').on('show.bs.modal', function (event) {
 
       modal.find('.modal-body #name').val(nome)
       modal.find('.modal-body #email').val(email)
+      
       modal.find('.modal-body #id').val(id)
 
 
@@ -616,6 +640,14 @@ $(function(){
         $('#datetimepicker1').datetimepicker();
 
     });
+</script>
+<script>
+function toggle(source) {
+  checkboxes = document.getElementsByName('permissao[]');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
 </script>
 </body>
 </html>

@@ -17,6 +17,8 @@ object {
   color: #4BB543;
 }
 </style>
+
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -26,7 +28,7 @@ object {
       </h1>
     </section>
 
-    
+   
     <!-- Main content -->
     <section class="content">
     @if(count($errors) > 0)
@@ -38,12 +40,14 @@ object {
                     @endforeach
             </div>
         @endif
+        
       <div class="row">
         <div class="col-xs-12">
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todas as Tarefas </h1>
-              @if($user->addTarefas == 1)
+              
+              @if($user->can('addTarefas'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
               @endif
@@ -59,7 +63,7 @@ object {
                   <th>Observações</th>
                   <th>Id Entidade</th>
                   <th>Tipo</th>
-                  @if($user->editTarefas == 1 || $user->deleteTarefas == 1)
+                  @if($user->can('edtTarefas') && $user->can('rmTarefas'))
                   <th>Ações</th>
                   @endif
                 </tr>
@@ -82,9 +86,10 @@ object {
                                         if($connect->connect_error){
                                             die("connection failed:".$connect->connect_error);
                                         }
+
                                         $auxiliar = $tarefa->id_utilizador;
 
-                                        $query = "SELECT name from users where $auxiliar = id";
+                                        $query = "SELECT name from users where $auxiliar = users.id";
                                         $result = $connect->query($query);
 
                                         while ($row = $result->fetch_assoc()) {
@@ -112,11 +117,7 @@ object {
                                 <td>{{$tarefa->observacao}}</td>
                                         
                                 <?php 
-                                        $connect = mysqli_connect("localhost","root","","p4");
-
-                                        if($connect->connect_error){
-                                            die("connection failed:".$connect->connect_error);
-                                        }
+                                  
                                         $auxiliar = $tarefa->entidade;
 
                                         $query = "SELECT nome from entidades where $auxiliar = idEntidade";
@@ -131,13 +132,8 @@ object {
                                 <?php 
                                         header('Content-Type: text/html; charset=utf-8');
                                         
-                                        $connect = mysqli_connect("localhost","root","","p4");
-
-                                        if($connect->connect_error){
-                                            die("connection failed:".$connect->connect_error);
-                                        }
+                                        
                                         $auxiliar = $tarefa->tipo_tarefa_idtipo_tarefa;
-
                                         $query = "SELECT nome from tipo_tarefa where $auxiliar = idtipo_tarefa";
                                         $result = $connect->query($query);
 
@@ -152,8 +148,7 @@ object {
                                 ?>   
                                 
                                
-                                
-                                @if($user->editTarefas == 1 )
+                                @if($user->can('edtTarefas'))
                                 <td>
                                         
                             <a href= "#" <button type="button" class="btn btn-warning" type="button"  data-toggle="modal" 
@@ -167,9 +162,10 @@ object {
 
                              @endif
                            
-                             @if($user->deleteTarefas == 1 && $user->editTarefas == 1 )
+                             @if($user->can('edtTarefas') && $user->can('rmTarefas'))
                                  <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button"  class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                                @elseif($user->deleteTarefas == 1 && $user->editTarefas == 0 )
+                                 @elseif($user->can('edtTarefas') && $user->can('rmTarefas') == false)
+                               
                                 <td><a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
                                 @endif
                                

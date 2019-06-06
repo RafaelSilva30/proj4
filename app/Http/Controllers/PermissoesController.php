@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\User;
+use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 
 class PermissoesController extends Controller
@@ -66,9 +67,11 @@ class PermissoesController extends Controller
      * @param  \App\permissoes  $permissoes
      * @return \Illuminate\Http\Response
      */
-    public function edit(permissoes $permissoes)
+    public function edit($id)
     {
-        //
+        $data3['data3'] = User::findOrFail($id);
+        
+        return view('userEdit',$data3);
     }
 
     /**
@@ -78,10 +81,39 @@ class PermissoesController extends Controller
      * @param  \App\permissoes  $permissoes
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, permissoes $permissoes)
+    public function update(Request $request, $id)
     {
-        //
-    }
+        
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+                
+            ]);
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        $user->save();
+
+
+
+        if(isset($_POST['permissao'])){
+            $permissoes = $_POST['permissao'];
+
+            $role = Role::findById($id);
+            $role->syncPermissions();       
+            foreach($permissoes as $key => $value){
+                
+                
+                $role->givePermissionTo($value);
+            }
+        }
+       
+
+        return redirect('/permissoes');
+
+
+}
 
     /**
      * Remove the specified resource from storage.

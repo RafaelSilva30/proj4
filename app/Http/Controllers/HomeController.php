@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\tarefas;
-
+use App\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Carbon\Carbon;
 
 class HomeController extends Controller
 {
-    
+    protected $guard_name = 'web';
     /**
      * Create a new controller instance.
      *
@@ -26,8 +28,27 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        return view('home');
+    {   $user = auth()->user();
+        
+        if ($user->hasAnyRole(Role::all())) {
+
+            return view('home');
+
+        } else {
+            $role = Role::create(['name'=>"{$user->name}"]);
+            $user->assignRole("{$user->name}");
+            $role->givePermissionTo('verTarefas');
+            $role->givePermissionTo('verEntidades');
+            $role->givePermissionTo('verPrograma');
+            $role->givePermissionTo('verContabilista');
+            return view('home');
+        }
+        
+
+
+        $permission = Permission::findById(1);
+        
+        
     }
 
     public function test()

@@ -12,7 +12,6 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
-
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
     'after' => 'The :attribute must be a date after :date.',
@@ -39,7 +38,7 @@ return [
     'digits_between' => 'The :attribute must be between :min and :max digits.',
     'dimensions' => 'The :attribute has invalid image dimensions.',
     'distinct' => 'The :attribute field has a duplicate value.',
-    'email' => 'The :attribute must be a valid email address.',
+    'email' => 'O :attribute deve ser um E-mail válido.',
     'exists' => 'The selected :attribute is invalid.',
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
@@ -94,7 +93,7 @@ return [
     'numeric' => 'The :attribute must be a number.',
     'present' => 'The :attribute field must be present.',
     'regex' => 'The :attribute format is invalid.',
-    'required' => 'The :attribute field is required.',
+    'required' => 'O campo :attribute é obrigatório.',
     'required_if' => 'The :attribute field is required when :other is :value.',
     'required_unless' => 'The :attribute field is required unless :other is in :values.',
     'required_with' => 'The :attribute field is required when :values is present.',

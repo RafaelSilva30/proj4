@@ -1,7 +1,13 @@
 @extends('layouts.main')
+
 @section('content')
 
-
+<?php
+            use Carbon\Carbon;
+            Carbon::setLocale('pt');
+          $user = auth()->user();
+          
+          ?>    
 <style type="text/css" media="Screen">
 object:hover, object.hover {
   color:#006400;
@@ -19,27 +25,43 @@ object {
        Tarefas
       </h1>
     </section>
+
+    
     <!-- Main content -->
     <section class="content">
+    @if(count($errors) > 0)
+            <div class="aler alert-danger">
+                <button type="button" class="close" data-dismiss="alert">x</button>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li> {{$error}} </li>            
+                    @endforeach
+            </div>
+        @endif
       <div class="row">
         <div class="col-xs-12">
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todas as Tarefas </h1>
+              @if($user->addTarefas == 1)
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
+              @endif
             </div>
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example1" class="table table-bordered table-striped" >
                 <thead>
                 <tr>
-                  <th>Id Tarefa</th>
+
                   <th>Nome do Utilizador</th>
                   <th>Data Inicio</th>
                   <th>Data Fim</th>
+                  <th>Tempo Total </th>
                   <th>Observações</th>
                   <th>Id Entidade</th>
                   <th>Tipo</th>
+                  @if($user->editTarefas == 1 || $user->deleteTarefas == 1)
                   <th>Ações</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -51,7 +73,7 @@ object {
                         @foreach($tarefas as $tarefa)
                         
                                 <tr>
-                                <td>{{$tarefa->idtarefas}}</td>
+
 
                                 <?php 
                                         
@@ -70,14 +92,26 @@ object {
                                         }
                                         //echo("<script>console.log('PHP: ".$result."');</script>");
                                         //echo "<td> $result </td>";
+                                            
+                                        $startTime = Carbon::parse($tarefa->data_inicio);
+                                        $finishTime = Carbon::parse($tarefa->data_fim);
+                                        if($tarefa->data_fim == null){
+                                            $totalDuration = "Sem data final";
+                                        }else{
+                                        $totalDuration = $finishTime->diffForHumans($startTime);
+                                        }
                                 ?>
 
                                 <td>{{$tarefa->data_inicio}}</td>
                                 <td>{{$tarefa->data_fim}}</td>
+                                <td>{{$totalDuration}}</td>
+                                
+                                
+                                
+                                
                                 <td>{{$tarefa->observacao}}</td>
                                         
                                 <?php 
-                                        
                                         $connect = mysqli_connect("localhost","root","","p4");
 
                                         if($connect->connect_error){
@@ -96,6 +130,7 @@ object {
 
                                 <?php 
                                         header('Content-Type: text/html; charset=utf-8');
+                                        
                                         $connect = mysqli_connect("localhost","root","","p4");
 
                                         if($connect->connect_error){
@@ -115,19 +150,29 @@ object {
                                         $query = "SELECT idEntidade from tarefas";
                                         $result = $query;
                                 ?>   
-
-                                <td >  <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-
-
-
-                            <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
+                                
+                               
+                                
+                                @if($user->editTarefas == 1 )
+                                <td>
+                                        
+                            <a href= "#" <button type="button" class="btn btn-warning" type="button"  data-toggle="modal" 
                             data-id="{{$tarefa->idtarefas}}"
                             data-myentidade="{{$tarefa->entidade}}"
                             data-tipotarefa="{{$tarefa->tipo_tarefa_idtipo_tarefa}}"
                             data-dataini="{{$tarefa->data_inicio}}"
                             data-datafim="{{$tarefa->data_fim}}"
                             data-observacao="{{$tarefa->observacao}}"
-                             data-target="#editTarefasModal" ><i class="fa fa-edit fa"></i></td>
+                             data-target="#editTarefasModal" ><i class="fa fa-edit fa" ></i></a>
+
+                             @endif
+                           
+                             @if($user->deleteTarefas == 1 && $user->editTarefas == 1 )
+                                 <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button"  class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                                @elseif($user->deleteTarefas == 1 && $user->editTarefas == 0 )
+                                <td><a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                                @endif
+                               
                                 </tr>
                         @endforeach
                     @else  
@@ -143,9 +188,12 @@ object {
         </div>
         <!-- /.col -->
       </div>
+      
       <div id="entidadesModal" class="modal fade">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+
+        
             <div class="modal-header">
             <form method="POST" action="/tarefas">
             
@@ -159,7 +207,7 @@ object {
                     <input type="hidden" name="_token" value="">
                     <div class="form-group">
                     @csrf
-                        <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
+                        <label class="control-label" style="margin-right:18px;" >Entidade</label>
                         <div>
                             <select name="entidades">
                             @foreach ($nome_entidades as $data)
@@ -201,20 +249,26 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" rows="3" maxlength="150"></textarea>
                           </div>
+                          <label id="count"></label>
                     </div>
                     <div class="form-group">
                         <div class="modal-footer">
+                            
+                            
                             <button type ="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             <button href="tarefas/create" type="submit" class="btn btn-primary">
                                 Criar Tarefa
+
+                                
                             </button>
                         </div>
                     </div>
                 </form>
             </div>
             </div>
+            
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog --> 
   </div><!-- /.modal -->
@@ -241,7 +295,7 @@ object {
                     <input type="hidden" name="idtarefas" id="id" value="">
                     <div class="form-group">
                     
-                        <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
+                        <label class="control-label" style="margin-right:18px;" >Entidade</label>
                         <div>
                             <select name="entidades" id="entidade">
                             @foreach ($nome_entidades as $data)
@@ -263,18 +317,13 @@ object {
                     </div><label for="username">Data do Inicio da Tarefa</label>
                       <div>
                       
-                            <div class='input-group datetime' name="datetimepicker6" id="datetimepicker6"  >
+                            <div class='input-group datetime' name="datetimepicker6" id="datetimepicker6">
                                 <input type='datetime' class="form-control" value="{{$tarefa->data_ini}}" name="datetimepicker6" id="datetimepicker6"  />
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
+                                
                                 </div><label for="username">Data do Fim da Tarefa</label>
                                 <div class="form-group">
                             <div class='input-group datetime' name="datetimepicker7" id="datetimepicker7" >
                                 <input type='datetime' class="form-control" value="{{$tarefa->data_fim}}" name="datetimepicker7" id="datetimepicker7"/>
-                                <span class="input-group-addon">
-                                    <span class="glyphicon glyphicon-calendar"></span>
-                                </span>
                               </div>
                           </div>
                       </div>
@@ -282,9 +331,11 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" id="obs" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" id="obs" rows="3" maxlength="150"></textarea>
+                          <label id="count"></label>
                           </div>
                     </div>
+                    
                     <div class="form-group">
                         <div>
                         

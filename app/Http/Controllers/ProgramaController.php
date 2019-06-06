@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 
 use App\programa;
+use App\logs;
 use Illuminate\Http\Request;
+
 use DB;
 
 
+        
+
+    
 class ProgramaController extends Controller
 {
     /**
@@ -50,6 +55,15 @@ class ProgramaController extends Controller
         $data->nome = $request->name;
         $data->data_validade = $request->datepicker;
         $data->save();
+        
+        $user = auth()->user();
+        $log = new logs;
+        $log->ip = request()->ip();
+        $log->menu = "Programa";
+        $log->descricao = "O user {$user->name} Criou o programa com o nome:{$request->name}";
+        $log->users_id = $user->id ;
+        $log->save();
+
         return redirect('/programa');
     }
 
@@ -84,16 +98,22 @@ class ProgramaController extends Controller
      */
     public function update(Request $request,$id)
     {
-
         
-
-         
         $programa = programa::findOrFail($request->id1);
 
         $programa->nome = $request->name;
         $programa->data_validade = $request->datetimepicker1;
 
-        $programa->save(); 
+        $programa->save();
+
+        $user = auth()->user();
+        $log = new logs;
+        $log->ip = request()->ip();
+        $log->menu = "Programa";
+        $log->descricao = "O user {$user->name} editou o programa com o id: {$request->id1}";
+        $log->users_id = $user->id ;
+        $log->save();
+        return redirect('/programa');
         
     }
 
@@ -106,7 +126,16 @@ class ProgramaController extends Controller
     public function destroy($id)
     {
         try{
+            
             programa::destroy($id);
+            $user = auth()->user();
+            $log = new logs;
+            $log->ip = request()->ip();
+            $log->menu = "Programa";
+            $log->descricao = "O user: {$user->name} apagou o programa {$id}";
+            $log->users_id = $user->id ;
+            $log->save();
+
             return redirect('/programa');
 
         }catch(\Illuminate\Database\QueryException $ex){ 

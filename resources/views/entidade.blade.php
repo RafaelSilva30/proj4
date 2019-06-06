@@ -1,3 +1,10 @@
+
+<?php
+          $user = auth()->user();
+          
+          ?>  
+@if($user->verEntidades == 1)  
+
 @extends('layouts.main')
 @section('content')
 
@@ -24,13 +31,15 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todas as Entidades </h1>
+              @if($user->addEntidades == 1)
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
+              @endif
             </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Id Entidade</th>
+
                   <th>Nome</th>
                   <th>Contacto</th>
                   <th>Email</th>
@@ -39,7 +48,9 @@ object {
                   <th>Validade do Contrato</th>
                   <th>Contacto do Contabilista</th>
                   <th>Observações</th>
+                  @if($user->editEntidades == 1 || $user->deleteEntidades == 1)
                   <th>Ações</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody> 
@@ -48,7 +59,7 @@ object {
 
                 @foreach($data as $entidade)
               <tr>
-              <td>{{$entidade->idEntidade}}</td>
+
               <td>{{$entidade->nome}}</td>
               <td>{{$entidade->contacto}}</td>
               <td>{{$entidade->email}}</td>
@@ -105,35 +116,18 @@ object {
               <td>{{$entidade->validade_contrato}}</td>
               <td>{{$entidade->contacto_contabilista}}</td>
               <td>{{$entidade->observacoes}}</td>
-              <?php 
-            $sapo = 0 ;
 
-            $row2 = $result2->fetch_assoc();
-              ?>
-              
              
 
              
-               @if(($row2['idEntidade'] == $entidade->idEntidade))
-              <?php 
-                  $sapo = 1 ;
-               ?>
-
-              @endif
               
-                @if(($row2['idEntidade'] == $entidade->idEntidade) && $sapo == 0)
-       
-               <?php 
-                  $sapo = 1 ;
-               ?>
                
-                @else
-               
-                <td ><a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-                @endif
+                
+              
 
-
-              <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
+                @if($user->editEntidades == 1 )
+              <td>
+              <a href= "#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
               data-id="{{$entidade->idEntidade}}"
               data-nome="{{$entidade->nome}}"
               data-distrito="{{$entidade->distrito}}"
@@ -145,8 +139,16 @@ object {
               data-contactocontabilista="{{$entidade->contacto_contabilista}}"
               data-programa="{{$entidade->programa}}"
               data-observacoes="{{$entidade->observacoes}}"
-               data-target="#editEntidadesModal" ><i class="fa fa-edit fa"></i></td>
-              
+               data-target="#editEntidadesModal" ><i class="fa fa-edit fa"></i> </a>
+               @endif
+
+               @if($user->deleteEntidades == 1 && $user->editEntidades == 1 )
+                <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                @elseif ($user->deleteEntidades == 1 && $user->editEntidades == 0 )
+               <td> <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                @elseif($user->deleteEntidades == 0 && $user->editEntidades == 1)
+                @endif
+                </td>
               </tr>
                 @endforeach
                 </tbody>
@@ -244,7 +246,7 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" id="obs" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" id="obs" rows="3" maxlength="150"></textarea>
                           </div>
                     </div>
                     <div class="form-group">
@@ -348,7 +350,8 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" id="observacoes" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" id="observacoes" rows="3" maxlength="150"></textarea>
+                          <label id="count"></label>
                           </div>
                     </div>
                     <div class="form-group">
@@ -369,4 +372,5 @@ object {
 
 
       </section>
+      @endif
 @endsection

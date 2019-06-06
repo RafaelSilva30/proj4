@@ -1,4 +1,11 @@
 
+<?php
+          $user = auth()->user();
+          
+          ?>  
+
+@if($user->verProgramas == 1)  
+
 @extends('layouts.main')
 
 @section('content')
@@ -27,16 +34,20 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todos os Programas </h1>
+              @if($user->addProgramas == 1)
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#programasModal"></i></object>
+              @endif
             </div>
-            <table id="example1" class="table table-bordered table-striped">
+            <table id="example5" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Id Programa</th>
+
                   <th>Nome</th>
                   <th>Data de Validade</th>
+                  @if($user->editProgramas == 1 || $user->deleteProgramas == 1)
                   <th>Ações</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody> 
@@ -45,15 +56,25 @@ object {
 
                 @foreach($data2 as $prog)
               <tr>
-              <td>{{$prog->idprograma}}</td>
+
               <td>{{$prog->nome}}</td>
               <td>{{$prog->data_validade}}</td>
-              <td ><a href="programa/delete/{{$prog->idprograma}}" onclick="return confirm('Tem a certeza que quer apagar o programa: {{$prog->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-              <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
+              
+              @if($user->editProgramas == 1 )
+              <td>
+             <a href="#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
               data-id1="{{$prog->idprograma}}"
               data-nome="{{$prog->nome}}"
               data-data_validade="{{$prog->data_validade}}"
-               data-target="#editProgramaModal" ><i class="fa fa-edit fa"></i></td>
+               data-target="#editProgramaModal" ><i class="fa fa-edit fa"></i> </a>
+               @endif
+               @if($user->deleteProgramas == 1 && $user->editProgramas == 1 )
+              <a href="programa/delete/{{$prog->idprograma}}" onclick="return confirm('Tem a certeza que quer apagar o programa: {{$prog->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+              @elseif($user->deleteProgramas == 1 && $user->editProgramas == 0)
+              <td><a href="programa/delete/{{$prog->idprograma}}" onclick="return confirm('Tem a certeza que quer apagar o programa: {{$prog->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+              @elseif($user->deleteProgramas == 0 && $user->editProgramas == 1)
+              </td> 
+              @endif
                 @endforeach
               </tbody> 
                 </table>
@@ -69,13 +90,11 @@ object {
                 <span aria-hidden="true">&times;</span>
                 </button>
             <h1 class="modal-title">Adicionar um novo Programa </h1>
-            
-           
             </div>
             <div class="modal-body">
             <div class="form-group">          
             <input type="hidden" name="Idprogramas" id="id1" value="">
-              <label class="control-label" style="margin-right:18px;" >Indique o nome do Programa</label>
+              <label class="control-label" style="margin-right:18px;" >Nome do Programa</label>
             <div>
               <input type="text" name="name" id="nome" >
               </div>
@@ -122,13 +141,10 @@ object {
                 <span aria-hidden="true">&times;</span>
                 </button>
             <h1 class="modal-title">Editar Programa</h1>
-            
-            
             </div>
-            
             <div class="modal-body">
             
-            <label class="control-label" style="margin-right:18px;" >Indique o nome do Programa</label>
+            <label class="control-label" style="margin-right:18px;" >Nome do Programa</label>
             <div>
               <input type="text" name="name" id="nome" >
               </div>
@@ -163,3 +179,6 @@ object {
                 </section>
         
 @endsection
+@else
+  <h1> Nao tem permissoes </h1>
+  @endif

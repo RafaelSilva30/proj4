@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\contabilista;
+use App\distrito;
 use App\logs;
 use Illuminate\Http\Request;
 
-class ContabilistaController extends Controller
+class DistritoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,15 +15,8 @@ class ContabilistaController extends Controller
      */
     public function index()
     {
-        $data3['data3'] = contabilista::all();
-
-         
-        if(count($data3) >0 ){
-            return view('contabilista',$data3);
-        }
-        else{
-            return view('contabilista');
-        }
+        $data5['data5'] = distrito::all();
+        return view('distrito',$data5);
     }
 
     /**
@@ -44,31 +37,27 @@ class ContabilistaController extends Controller
      */
     public function store(Request $request)
     {
-        $cont = new contabilista;
-        $cont->nome = $request->name;
-        $cont->contacto = $request->contact;
-        $cont->email = $request->email;
-        $cont->save();
+        $data = new distrito;
+        $data->nome = $request->name;
+        $data->save();
 
         $user = auth()->user();
         $log = new logs;
         $log->ip = request()->ip();
-        $log->menu = "Contabilista";
-        $log->descricao = "O user: {$user->name} criou o contabilista com o nome:{$request->name}";
+        $log->menu = "Distrito";
+        $log->descricao = "O user: {$user->name} criou o distrito: {$request->name}";
         $log->users_id = $user->id ;
         $log->save();
-
-
-        return redirect('/contabilista');
+        return redirect('/distrito');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\distrito  $distrito
      * @return \Illuminate\Http\Response
      */
-    public function show(contabilista $contabilista)
+    public function show(distrito $distrito)
     {
         //
     }
@@ -76,10 +65,10 @@ class ContabilistaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\distrito  $distrito
      * @return \Illuminate\Http\Response
      */
-    public function edit(contabilista $contabilista)
+    public function edit(distrito $distrito)
     {
         //
     }
@@ -88,55 +77,49 @@ class ContabilistaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\distrito  $distrito
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, contabilista $contabilista)
+    public function update(Request $request,$id)
     {
+        $distrito = distrito::findOrFail($request->id1);
+        $distrito->nome = $request->name;
+        $distrito->save();
         
-         
-        $cont = contabilista::findOrFail($request->id);
-
-        $cont->nome = $request->name;
-        $cont->contacto = $request->contact;
-        $cont->email = $request->email;
-        $cont->save();  
-
 
         $user = auth()->user();
         $log = new logs;
         $log->ip = request()->ip();
-        $log->menu = "Contabilista";
-        $log->descricao = "O user: {$user->name} alterou o contabilista com o nome:{$request->name}";
+        $log->menu = "Distrito";
+        $log->descricao = "O user: {$user->name} editou o distrito {$request->id1}";
         $log->users_id = $user->id ;
         $log->save();
-        return redirect('/contabilista');
-
-        
+        return redirect('/distrito');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\contabilista  $contabilista
+     * @param  \App\distrito  $distrito
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         try{
-            contabilista::destroy($id);
-
+            
+            distrito::destroy($id);
             $user = auth()->user();
             $log = new logs;
             $log->ip = request()->ip();
-            $log->menu = "Contabilista";
-            $log->descricao = "O user: {$user->name} apagou o contabilista com o id:{$id}";
+            $log->menu = "Distrito";
+            $log->descricao = "O user: {$user->name} apagou o distrito {$id}";
             $log->users_id = $user->id ;
             $log->save();
-            return redirect('/contabilista');
+
+            return redirect('/distrito');
 
         }catch(\Illuminate\Database\QueryException $ex){ 
-         return "<h1> ERRO O CONTABILISTA ESTÁ ASSOCIADA A UMA ENTIDADE";   
+         return "<h1> ERRO O DISTRITO ESTÁ ASSOCIADA A UMA ENTIDADE";   
          ;
         }
     }

@@ -1,4 +1,9 @@
 
+<?php
+          $user = auth()->user();
+          
+          ?>  
+@if($user->verContabilistas == 1)  
 @extends('layouts.main')
 
 @section('content')
@@ -25,17 +30,21 @@ object {
             <div class="box">
                 <div class="box-header">
                     <h1 class="box-title">Todas os Contabilistas </h1>
+                    @if($user->addContabilistas == 1)
                     <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
                     class="bv" data-toggle="modal" data-target="#ContabilistaModal"></i></object>
+                    @endif
                 </div>
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                    <th>Id Contabilista</th>
+
                     <th>Nome</th>
                     <th>Contacto</th>
                     <th>Email</th>
-                    <th>Ações</th>
+                    @if($user->editContabilistas == 1 || $user->deleteContabilistas == 1)
+                  <th>Ações</th>
+                  @endif
                     </tr>
                     </thead>
                     <tbody>
@@ -45,28 +54,33 @@ object {
                     @foreach($data3 as $contabilista)
 
                     <tr>
-                    <td>{{$contabilista->idcontabilista}}</td>
+
                     <td>{{$contabilista->nome}}</td>
                     <td>{{$contabilista->contacto}}</td>
                     <td>{{$contabilista->email}}</td>
-
-                    <td > <a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-                        <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal" 
+                        
+                  
+                    @if($user->editContabilistas == 1  )
+                        <td>
+                       <a href="#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal" 
                         data-id = "{{$contabilista->idcontabilista}}"
                         data-nome = "{{$contabilista->nome}}"
                         data-contacto = "{{$contabilista->contacto}}"
                         data-email = "{{$contabilista->email}}"
-                        data-target="#editarContabilista" ><i class="fa fa-edit fa"></i></td>
-                    </tr>
+                        data-target="#editarContabilista" ><i class="fa fa-edit fa"></i> </a>
 
-                    @endforeach
-                    @else
+                    @if($user->deleteContabilistas == 1 && $user->editContabilistas == 1) 
+                      <a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                    @elseif($user->deleteContabilistas == 1 && $user->editContabilistas == 0)
+                    <td><a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                    @elseif($user->deleteContabilistas == 0 && $user->editContabilistas == 1)
+                    </td>
+                    @endif
+                    </tr>
                     
-                    <td></td>
-                    <td></td>
-                    <td>Não há Contabilistas</td>
-                    <td></td>
-                    <td></td>
+                    @endif
+                    @endforeach
+
                     @endif
                     </tbody>
                 </table>
@@ -93,20 +107,20 @@ object {
                             <div class="modal-body">
                             <div class="form-group">          
                                 <input type="hidden" name="id" id="id" value="">
-                            <label class="control-label" style="margin-right:18px;" >Indique o nome do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Nome do Contabilista</label>
                             <div>
                                 <input type="text" name="name" id="nome"  >
                             </div>
 
                             
                                     
-                            <label class="control-label" style="margin-right:18px;" >Indique o contacto do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Contacto do Contabilista</label>
                             <div>
                                 <input type="text" name="contact" id="contacto" maxlength="9" >
                             </div>
 
 
-                            <label class="control-label" style="margin-right:18px;" >Indique o email do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Email do Contabilista</label>
                             <div>
                                 <input type="text" name="email" id="email">
                             </div>
@@ -138,20 +152,20 @@ object {
                             <div class="modal-body">
                             <div class="form-group">          
                                 <input type="hidden" name="id" id="id" value="">
-                            <label class="control-label" style="margin-right:18px;" >Indique o nome do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Nome do Contabilista</label>
                             <div>
                                 <input type="text" name="name" id="nome"  >
                             </div>
 
                             
                                     
-                            <label class="control-label" style="margin-right:18px;" >Indique o contacto do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Contacto do Contabilista</label>
                             <div>
                                 <input type="text" name="contact" id="contacto" maxlength="9" >
                             </div>
 
 
-                            <label class="control-label" style="margin-right:18px;" >Indique o email do Contabilista</label>
+                            <label class="control-label" style="margin-right:18px;" >Email do Contabilista</label>
                             <div>
                                 <input type="text" name="email" id="email">
                             </div>
@@ -167,5 +181,5 @@ object {
     </div><!-- /.modal-dialog --> 
 
 </section>
-  
+  @endif
 @endsection

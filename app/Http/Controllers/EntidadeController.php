@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\entidade;
+use App\logs;
 use Illuminate\Http\Request;
 use DB;
 
@@ -73,6 +74,14 @@ class EntidadeController extends Controller
         $data->programa = $programa;
         $data->save();
 
+        $user = auth()->user();
+        $log = new logs;
+        $log->ip = request()->ip(); 
+        $log->menu = "Entidade";
+        $log->descricao = "O user: {$user->name} criou a entidade com o nome: {$request->name}";
+        $log->users_id = $user->id ;
+        $log->save();
+        return redirect('/entidade');
 
     }
 
@@ -122,6 +131,15 @@ class EntidadeController extends Controller
         $entidade->programa = $request->programa;
         $entidade->save();
         
+
+        $user = auth()->user();
+        $log = new logs;
+        $log->ip = request()->ip();
+        $log->menu = "Entidade";
+        $log->descricao = "O user {$user->name} alterou a Entidade com o id:{$request->idEntidade}";
+        $log->users_id = $user->id ;
+        $log->save();
+        return redirect('/entidade');
     }
     /**
      * Remove the specified resource from storage.
@@ -133,6 +151,14 @@ class EntidadeController extends Controller
     {
         try{
             entidade::destroy($id);
+
+            $user = auth()->user();
+            $log = new logs;
+            $log->ip = request()->ip();
+            $log->menu = "Entidade";
+            $log->descricao = "O user {$user->name} apagou a Entidade com o id:{$id}";
+            $log->users_id = $user->id ;
+            $log->save();
             return redirect('/entidade');
 
         }catch(\Illuminate\Database\QueryException $ex){ 

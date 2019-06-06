@@ -1,4 +1,10 @@
+<?php
+          $user = auth()->user();
+          
+          ?>
 
+         
+@if($user->verTarefas == 1)  
 @extends('layouts.main')
 
 @section('content')
@@ -22,26 +28,29 @@ object {
     </section>
     <!-- Main content -->
     <section class="content">
+
       <div class="row">
         <div class="col-xs-12">
             <div class="box">
             <div class="box-header">
               <h1 class="box-title" >Tarefas dos proximos 30 dias </h1>
+              @if($user->addTarefas == 1)
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
+              @endif
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Id Tarefa</th>
-                  <th>Nome do Utilizador</th>
-                  <th>Tipo</th>
+
+                  <th>Nome do User</th>
                   <th>Data Inicio</th>
                   <th>Data Fim</th>
                   <th>Observações</th>
                   <th>Nome da Entidade</th>
+                  <th>Tipo</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,18 +62,20 @@ object {
                   }
 
                   $query = "SELECT * FROM tarefas WHERE data_fim <= CURDATE() + INTERVAL 30 DAY";
+                  
                   $result = $connect -> query($query);
 
                   if ($result-> num_rows > 0) {
                     while ($row = $result-> fetch_assoc()){
                       echo "<tr>";
-                      echo "<td>". $row["idtarefas"] ."</td>";
+                      //HELP HERE PISCAS MIGUEL
                       echo "<td>". $row["id_utilizador"] ."</td>";
-                      echo "<td>". $row["tipo_tarefa_idtipo_tarefa"] ."</td>";
+                     
                       echo "<td>". $row["data_inicio"] ."</td>";
                       echo "<td>". $row["data_fim"] ."</td>";
                       echo "<td>". $row["observacao"] ."</td>";
                       echo "<td>". $row["entidade"] ."</td>";
+                      echo "<td>". $row["tipo_tarefa_idtipo_tarefa"] ."</td>";
                       echo "</tr>";
                     }
                   }
@@ -93,7 +104,7 @@ object {
                     <input type="hidden" name="_token" value="">
                     <div class="form-group">
                     @csrf
-                        <label class="control-label" style="margin-right:18px;" >Indique a Entidade</label>
+                        <label class="control-label" style="margin-right:18px;" >Entidade</label>
                         <div>
                             <select name="entidades" id="entidades">
                             @foreach ($nome_entidades as $data)
@@ -135,7 +146,8 @@ object {
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
-                          <textarea class="form-control" name="observacoes" rows="3"></textarea>
+                          <textarea class="form-control" name="observacoes" rows="3" maxlength="150"></textarea>
+                          <label id="count"></label>
                           </div>
                     </div>
                     <div class="form-group">
@@ -156,3 +168,5 @@ object {
       <!-- /.row -->
     </section>
 @endsection
+
+@endif

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Proj4</title>
@@ -15,7 +16,6 @@
   <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
   <!-- DataTables -->
   <link rel="stylesheet" href="../../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.bootstrap4.min.css">
 
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
@@ -24,8 +24,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.5.0/js/bootstrap-datepicker.js"></script>
-
-
 
 
 
@@ -47,7 +45,7 @@
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="../../index2.html" class="logo">
+    <a class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>P</b>4</span>
       <!-- logo for regular state and mobile devices -->
@@ -80,9 +78,9 @@
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                <img src="../../dist/img/logo.png" class="img-circle" alt="User Image">
                 <p>
-                  User 1
+                {{$user->name}}
                 </p>
               </li>
               <!-- Menu Body -->
@@ -92,7 +90,7 @@
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
-              <li class="user-footer">
+              
                 <div class="pull-left">
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
@@ -126,44 +124,74 @@
           $user = auth()->user();
           echo"<p>$user->name</p>";
           ?>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
       
       <!-- /.search form -->
-      <!-- sidebar menu: : style can be found in sidebar.less -->
+      <!-- sidebar menu: : style can be found in sidebar.less style="display: block;" -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
+        @if ($user->verTarefas==1)
         <li class="treeview">
           <a href="#">
           <i class="fa fa-tasks" ></i><span>Tarefas</span>
             <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
+              <i class="fa fa-angle-left pull-down"></i>
             </span>
           </a>
-          <ul class="treeview-menu" style="display: block;">
+          <ul class="treeview-menu">
             <li><a href="{{route('home')}}"><i class="fa fa-circle-o"></i> Consultar proximas tarefas</a></li>
             <li><a href="{{route('tarefas')}}"><i class="fa fa-circle-o"></i> Todas as Tarefas</a></li>
           </ul>
+          </li>
+          @endif
 
+          @if ($user->alterarPermissoes==1)
+        <li class="treeview">
+        <a href="#">
+          <i class="fa fa-users" ></i><span>Utilizadores</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-down"></i>
+            </span>
+          </a>
           <ul class="treeview-menu">
-            
-          </ul> 
+        <li> <a href="{{route('permissoes')}}"><i class="fa fa-unlock" aria-hidden="true"></i> <span>Usadasd</span></a></li>
+        </ul>
         </li>
+        @endif
 
         <li class="treeview">
-        <li> <a href="{{route('entidade')}}"><i class="fa fa-users"></i></i> <span>Entidades</span></li>
+        <a href="#">
+          <i class="fa fa-users" ></i><span>José Maria da Costa</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-down"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+        <li> <a href="{{route('distrito')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Distritos</span></a></li>
+        <li> <a href="{{route('concelho')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Concelhos</span></a></li>
+        <li> <a href="{{route('freguesia')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Freguesia</span></a></li>
+        </ul>
+        </li>
+
+        @if ($user->verEntidades==1)
+        <li class="treeview">
+        <li> <a href="{{route('entidade')}}"><i class="fa fa-user-circle"></i></i> <span>Entidades</span></li>
             <span class="pull-right-container" >
             </span>
           </a>
         </li>
-
+        @endif
+        @if ($user->verProgramas==1)
         <li class="treeview">
         <li> <a href="{{route('programa')}}"><i class="fa fa-copyright" aria-hidden="true"></i> <span>Programas</span></li>
             <span class="pull-right-container" >
             </span>
           </a>
         </li>
+        @endif
+        @if ($user->verContabilistas==1)
         <li class="treeview">
         <li> <a href="{{route('contabilista')}}"><i class="fa fa-eur" aria-hidden="true"></i> <span>Contabilista</span></li>
             <span class="pull-right-container" >
@@ -171,7 +199,17 @@
           </a>
         </li>
 
+        <li class="treeview">
+        <li> <a href="{{route('logs')}}"><i class="fa fa-cogs" aria-hidden="true"></i> <span>logs</span></li>
+            <span class="pull-right-container" >
+            </span>
+          </a>
+        </li>
+
+        @endif
+        
         </ul>
+        
     </section>
     <!-- /.sidebar -->
   </aside>
@@ -187,7 +225,7 @@
     <div class="pull-right hidden-xs">
       <b>Version</b> 2.4.0
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+    <strong>Copyright &copy; 2018-2019 Miguel e Rafael </a> &nbsp;&nbsp;</strong>  All rights
     reserved.
   </footer>
   <!-- Add the sidebar's background. This div must be placed
@@ -217,23 +255,84 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 
+
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
 
 <script type="text/javascript" src="../../bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
   <link rel="stylesheet" href="../../bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+  
 <!-- page script -->
 <script>
   $(function () {
-    $('#example1').DataTable()
+    var table = $('#example1').dataTable({
+
+   
+      "language": {
+            "lengthMenu": "Mostrar _MENU_ registos por página",
+            "emptyTable": "Sem dados disponíveis",
+            "infoEmpty": "Mostrando de 0 até 0 de 0 registos",
+            "info": "A mostrar de _START_ até _END_ de _TOTAL_ registos",
+            "infoFiltered": "(filtrado de _MAX_ registos no total)",
+            "search": "Procurar:",
+            "zeroRecords": "Não foram encontrados resultados",  
+            "paginate": {
+            "first": "Primeiro",
+            "last": "Último",
+            "next": "Seguinte",
+            "previous": "Anterior"
+            }
+        },
+  });
+
+
+    
     $('#example2').DataTable({
       'paging'      : true,
       'lengthChange': false,
       'searching'   : false,
       'ordering'    : true,
       'info'        : true,
-      'autoWidth'   : false
+      'autoWidth'   : false,
+
     })
-  })
+    $('#example10').DataTable({
+      'ordering'    : false,
+      'paging'      : true,
+
+
+    })
+ 
+
+  var table1 = $('#example5').dataTable({
+
+    
+"language": {
+      "lengthMenu": "Mostrar _MENU_ registos por página",
+      "emptyTable": "Sem dados disponíveis",
+      "infoEmpty": "Mostrando de 0 até 0 de 0 registos",
+      "info": "A mostrar de _START_ até _END_ de _TOTAL_ registos",
+      "infoFiltered": "(filtrado de _MAX_ registos no total)",
+      "search": "Procurar:",
+      "zeroRecords": "Não foram encontrados resultados",  
+      "paginate": {
+      "first": "Primeiro",
+      "last": "Último",
+      "next": "Seguinte",
+      "previous": "Anterior"
+      }
+  },
+  "order": [[ 1, "desc" ]],
+
+});
+$('div.dataTables_filter input').unbind();
+  $('div.dataTables_filter input').bind('keyup', function(e) {
+      if(e.keyCode == 13) {
+        table.fnFilter(this.value);
+          table1.fnFilter(this.value);
+      } 
+  });
+})
 </script>
 
 
@@ -326,6 +425,99 @@ $('#editEntidadesModal').on('show.bs.modal', function (event) {
 
 </script>
 
+<script>
+
+$('#editdistritoModal').on('show.bs.modal', function (event) {
+  console.log('modal open');
+  var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+ 
+  
+  var id = button.data('id1');
+  var nome = button.data('nome');
+  
+
+  
+  var modal = $(this)
+
+  modal.find('.modal-body #id1').val(id)
+  modal.find('.modal-body #nome').val(nome)
+  
+
+})
+
+</script>
+
+<script>
+
+$('#editconcelhoModal').on('show.bs.modal', function (event) {
+  console.log('modal open');
+  var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  
+  
+  var id = button.data('id1');
+  var nome = button.data('nome');
+  var distrito = button.data('distrito')
+  
+  var modal = $(this)
+
+  modal.find('.modal-body #id1').val(id)
+  modal.find('.modal-body #nome').val(nome)
+  modal.find('.modal-body #distrito').val(distrito)
+})
+
+</script>
+
+<script>
+
+$('#editfreguesiaModal').on('show.bs.modal', function (event) {
+  console.log('modal open');
+  var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+ 
+  
+  var id = button.data('id1');
+  var nome = button.data('nome');
+  var concelho = button.data('concelho')
+
+  
+  var modal = $(this)
+
+  modal.find('.modal-body #id1').val(id)
+  modal.find('.modal-body #nome').val(nome)
+  modal.find('.modal-body #concelho').val(concelho)
+
+})
+
+</script>
+
+<script>
+
+    $('#exampleModalPreview').on('show.bs.modal', function (event) {
+      console.log('modal open');
+      var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+     
+      
+      var id = button.data('id1');
+     
+      
+      var modal = $(this)
+ 
+      modal.find('.modal-body #id1').val(id)
+     var temp = id;
+
+   
+    })
+
+</script>
+
+
 
 <script>
 
@@ -352,6 +544,31 @@ $('#editEntidadesModal').on('show.bs.modal', function (event) {
 </script>
 
 
+<script>
+
+$('#editUserModal').on('show.bs.modal', function (event) {
+  console.log('modal open');
+  var button = $(event.relatedTarget) // Button that triggered the modal// Extract info from data-* attributes
+  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+  
+
+      var nome = button.data('nome')
+      var email = button.data('email')
+      var id = button.data('id');
+      
+      var modal = $(this)
+
+      modal.find('.modal-body #name').val(nome)
+      modal.find('.modal-body #email').val(email)
+      modal.find('.modal-body #id').val(id)
+
+
+
+
+})
+</script>
+
 
 <script>
 
@@ -362,6 +579,7 @@ $(function(){
 });
 
 </script>
+
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker6').datetimepicker({ 
@@ -399,8 +617,5 @@ $(function(){
 
     });
 </script>
-
-
-
 </body>
 </html>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\tarefas;
 use App\logs;
+use App\programa;
+use App\progUser;
 use App\entidade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -19,22 +21,37 @@ class TarefasController extends Controller
      */
     public function index()
     {
+        $user = auth()->user();
+
         $dataatual = Carbon::now()->addMonths(1);
         echo("<script>console.log('PHP: ".Carbon::now()->subDays(0)."');</script>");
  
          $tarefas = tarefas::all();
+         $data4 = progUser::all();
+
          
-     
-         // erro, falta condição para filtrar as datas
-             //$tarefasProximas = DB::table('tarefas')->whereDate($tarefa->data_fim, '<', $dataatual);
-  
-         //
- 
- 
          
-         return view('tarefas.index')->with('tarefas', $tarefas);
-         return view('tarefas.index')->with('tarefas', $tarefasProximas);
-         return view('user.index', ['users' => $users]);
+         $arrAux = [];
+         foreach($data4 as $prog){
+             
+             $text = explode(" ",$prog->user);
+             
+             for ($i = 0; $i <= count($text)-1; $i++) {
+               $aux = "$user->name,";
+               $aux2 = "$user->name";
+ 
+                if(strcmp($text[$i],$aux) == 0 || strcmp($text[$i],$aux2)== 0){
+                 array_push($arrAux,$prog->iduser_prog);
+                
+                 }
+             }  
+         }
+
+         $data2 = programa::whereIn('id_prog_user', $arrAux)->join('tarefas', 'programas.idprograma', '=', 'tarefas.id_prog')->get();
+
+         return view('tarefas.index')->with(['tarefas' => $data2]);
+         return view('tarefas.index')->with('tarefas', $tarefasProximas,$data2);
+         return view('user.index', ['users' => $users],$data2);
        
     }
 
@@ -82,7 +99,7 @@ class TarefasController extends Controller
         $tarefas->id_utilizador = $user->id;
         $tarefas->data_inicio = $request->datetimepicker6;
         $tarefas->data_fim = $request->datetimepicker7;
-       
+        $tarefas->id_prog = $request->programa;
         
         $tarefas->entidade = $request->entidades;
         $tarefas->tipo_tarefa_idtipo_tarefa = $tipotarefa;

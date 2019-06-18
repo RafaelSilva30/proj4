@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\entProg;
 use App\entidade;
 use App\logs;
 use Illuminate\Http\Request;
@@ -52,16 +52,42 @@ class EntidadeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+
+
+
+
+     public function storeEntProg(Request $request){
+        $data = new entidade;
+        $data->concelho = 5;
+        $data->contabilista =1;
+        $data->save();
+
+
+        if(isset($_POST['programa'])){
+
+            $checked = implode(', ', $_POST['programa']); 
+            
+            $entidadePrograma = new entProg;
+            $entidadePrograma->programas = $checked;
+            $entidadePrograma->ent = $data->idEntidade;
+            $entidadePrograma->save();
+        }
+        $request->idEntProg = $entidadePrograma->entidadePrograma;
+
+        return $this->store($request, $data);
+     }
+
+    public function store(Request $request, $data)
     {
 
-        $programa =  $request->get('programa');
+       
+
         $concelho = $request->get('concelho');
         $distrito = $request->get('distrito');
         $contabilista = $request->get('contabilista');
 
 
-        $data = new entidade;
+       
         $data->nome = $request->name;
         $data->contacto = $request->contacto;
         $data->email = $request->email;
@@ -71,7 +97,7 @@ class EntidadeController extends Controller
         $data->concelho = $concelho;
         $data->distrito = $distrito;
         $data->contabilista = $contabilista;
-        $data->programa = $programa;
+        $data->programa = $request->idEntProg;
         $data->save();
 
         $user = auth()->user();
@@ -114,11 +140,30 @@ class EntidadeController extends Controller
      * @param  \App\entidade  $entidade
      * @return \Illuminate\Http\Response
      */
+    public function updateEntProg(Request $request){
+        $entidade = entidade::findOrFail($request->idEntidade);
 
-    public function update(Request $request)
-    {
-       $entidade = entidade::findOrFail($request->idEntidade);
+        $entidade->save();
 
+
+        if(isset($_POST['programa'])){
+
+            $checked = implode(', ', $_POST['programa']); 
+
+            $entidadePrograma = new entProg;
+            $entidadePrograma->programas = $checked;
+            $entidadePrograma->ent = $entidade->idEntidade;
+            $entidadePrograma->save();
+        }
+        $request->idEntProg = $entidadePrograma->entidadePrograma;
+
+        return $this->update($request, $entidade);
+     }
+
+
+    public function update(Request $request, $entidade)
+    {   
+        
         $entidade->nome = $request->name;
         $entidade->contacto = $request->contacto;
         $entidade->email = $request->email;
@@ -128,7 +173,7 @@ class EntidadeController extends Controller
         $entidade->contacto_contabilista = $request->contactocontabilista;
         $entidade->concelho = $request->concelho;
         $entidade->distrito = $request->distrito;
-        $entidade->programa = $request->programa;
+        $entidade->programa = $request->idEntProg;
         $entidade->save();
         
 

@@ -67,21 +67,26 @@ $aux = $data3->roles;
         <input type="checkbox" name="permissao[]" value="edtDistritos" @if($data3->can('edtDistritos')) checked @endif> Editar Distritos<br>
         
         <input type="checkbox" name="permissao[]" value="rmDistritos" @if($data3->can('rmDistritos')) checked @endif> Remover Distritos<br>
-        <input type="checkbox" name="permissao[]" value="verConcelhos"@if($data3->can('verConcelhos')) checked @endif> Listar Concelho<br>
-        <input type="checkbox" name="permissao[]" value="addConcelhos" @if($data3->can('addConcelhos')) checked @endif> Criar Concelho<br>
-        <input type="checkbox" name="permissao[]" value="edtConcelhos"@if($data3->can('edtConcelhos')) checked @endif> Editar Concelho<br>
+        <input type="checkbox" name="permissao[]" value="verConcelhos"@if($data3->can('verConcelhos')) checked @endif> Listar Concelhos<br>
+        <input type="checkbox" name="permissao[]" value="addConcelhos" @if($data3->can('addConcelhos')) checked @endif> Criar Concelhos<br>
+        <input type="checkbox" name="permissao[]" value="edtConcelhos"@if($data3->can('edtConcelhos')) checked @endif> Editar Concelhos<br>
+        <input type="checkbox" name="permissao[]" value="rmDistritos" @if($data3->can('rmDistritos')) checked @endif> Remover Concelhos<br>
+
+        <input type="checkbox" name="permissao[]" value="verFreguesias"@if($data3->can('verFreguesias')) checked @endif> Listar Freguesias<br>
+        <input type="checkbox" name="permissao[]" value="addFreguesias" @if($data3->can('addFreguesias')) checked @endif> Criar Freguesias<br>
+        <input type="checkbox" name="permissao[]" value="edtFreguesias"@if($data3->can('edtFreguesias')) checked @endif> Editar Freguesias<br>
+        <input type="checkbox" name="permissao[]" value="rmFreguesias"@if($data3->can('rmFreguesias')) checked @endif> Remover Freguesias<br>
+
         
-        <input type="checkbox" name="permissao[]" value="rmConcelhos"@if($data3->can('rmConcelhos')) checked @endif> Remover Concelho<br>
-        <input type="checkbox" name="permissao[]" value="verTarefas" @if($data3->can('verTarefas')) checked @endif> Listar Tarefas<br>
-        <input type="checkbox" name="permissao[]" value="addTarefas" @if($data3->can('addTarefas')) checked @endif> Criar Tarefas<br>
-        <input type="checkbox" name="permissao[]" value="edtTarefas" @if($data3->can('edtTarefas')) checked @endif> Editar Tarefas<br>
-    <input type="checkbox" name="permissao[]" value="rmTarefas" @if($data3->can('rmTarefas')) checked @endif> Remover Tarefas<br>
         
         
 	</div>
 
     <div class="col-md-6">
-
+    <input type="checkbox" name="permissao[]" value="verTarefas" @if($data3->can('verTarefas')) checked @endif> Listar Tarefas<br>
+        <input type="checkbox" name="permissao[]" value="addTarefas" @if($data3->can('addTarefas')) checked @endif> Criar Tarefas<br>
+        <input type="checkbox" name="permissao[]" value="edtTarefas" @if($data3->can('edtTarefas')) checked @endif> Editar Tarefas<br>
+        <input type="checkbox" name="permissao[]" value="rmTarefas" @if($data3->can('rmTarefas')) checked @endif> Remover Tarefas<br>
     <input type="checkbox" name="permissao[]" value="verEntidades" @if($data3->can('verEntidades')) checked @endif> Listar Entidades<br>
     <input type="checkbox" name="permissao[]" value="addEntidades" @if($data3->can('addEntidades')) checked @endif> Criar Entidades<br>
     <input type="checkbox" name="permissao[]" value="edtEntidades" @if($data3->can('edtEntidades')) checked @endif> Editar Entidades<br>

@@ -11,10 +11,11 @@ object {
   color: #4BB543;
 }
 </style>
-@if($userlog->alterarPermissoes == 1)  
+ 
 
 @extends('layouts.main')
 @section('content')
+@if($userlog->can('addUtilizadores') )  
 <section class="content-header">
     <h1>
       Utilizadores
@@ -54,12 +55,13 @@ object {
 
               <td>{{$user->name}}</td>
               <td>{{$user->email}}</td>
-              
+              @if ($userlog->can('edtUtilizadores'))
               <td>
               <a href="permissao/edit/{{$user->id}}"  <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"><i class="fa fa-edit fa"></i> </a>
 
 
                 </td>
+                @endif
                 @endforeach
               </tbody> 
                 </table>

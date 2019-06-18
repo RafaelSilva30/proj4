@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 
 use App\programa;
 use App\logs;
+use App\User;
+use App\progUser;
 use Illuminate\Http\Request;
 
 use DB;
 
 
-        
 
     
 class ProgramaController extends Controller
@@ -23,14 +24,26 @@ class ProgramaController extends Controller
     public function index()
     {
         
-        $data2['data2'] = programa::all();
+        $user = auth()->user();
+        
+        $data3 = User::all();
+        $data4 = progUser::all();
 
-        if(count($data2) >0 ){
-            return view('programa',$data2);
+        $arrAux = [];
+        foreach($data4 as $prog){
+            
+            $text = explode(" ",$prog->user);
+            for ($i = 0; $i <= count($text)-1; $i++) {
+              $aux = "$user->name,";
+              $aux2 = "$user->name";
+               if(strcmp($text[$i],$aux) == 0 || strcmp($text[$i],$aux2)== 0){
+                array_push($arrAux,$prog->iduser_prog);
+                }
+            }  
         }
-        else{
-            return view('programa');
-        }
+        $data2 = programa::whereIn('id_prog_user', $arrAux)->get();
+        //return view('programa',$data2,$data3);
+        return view('programa',['data2' => $data2],['data3' => $data3]);
     }
 
     /**
@@ -49,9 +62,34 @@ class ProgramaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+
+    public function storeProgUser(Request $request){
+        
+
         $data = new programa;
+        
+        $data->save();
+
+        if(isset($_POST['user'])){
+            $checked = implode(', ', $_POST['user']); 
+            
+            $progUser = new progUser;
+            $progUser->programa = $data->idprograma;
+            $progUser->user = $checked;
+
+            $progUser->save();
+
+
+        }
+        $request->iduser_prog = $progUser->iduser_prog;
+
+        return $this->store($request, $data);
+     }
+
+    public function store(Request $request, $data)
+    {
+
+        $data->id_prog_user = $request->iduser_prog;
         $data->nome = $request->name;
         $data->data_validade = $request->datepicker;
         $data->save();
@@ -96,14 +134,35 @@ class ProgramaController extends Controller
      * @param  \App\programa  $programa
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
-    {
-        
+
+
+    public function updateProgUser(Request $request){
         $programa = programa::findOrFail($request->id1);
 
+        $programa->save();
+
+
+        if(isset($_POST['user'])){
+
+            $checked = implode(', ', $_POST['user']); 
+
+            $progUser = new progUser;
+            $progUser->user = $checked;
+            $progUser->programa = $programa->idprograma;
+            $progUser->save();
+        }
+        $request->iduser_prog = $progUser->iduser_prog;
+
+        return $this->update($request, $programa);
+     }
+
+
+    public function update(Request $request,$programa)
+    {
+       
         $programa->nome = $request->name;
         $programa->data_validade = $request->datetimepicker1;
-
+        $programa->id_prog_user = $request->iduser_prog;
         $programa->save();
 
         $user = auth()->user();

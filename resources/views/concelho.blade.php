@@ -19,6 +19,7 @@ object {
 
 
 </style>
+@if($user->can('verConcelhos'))
 <section class="content-header">
     <h1>
        Concelho
@@ -31,17 +32,19 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todos os Concelhos </h1>
-            
+              @if($user->can('addConcelhos'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#concelhoModal"></i></object>
-
+              @endif
             </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nome do Concelho</th>
                   <th>Distrito</th>             
+                  @if($user->can('edtConcelhos') || $user->can('rmConcelhos'))
                   <th>Ações</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody> 
@@ -66,14 +69,20 @@ object {
               }
               ?>
               <td>
-                 
+              @if($user->can('edtConcelhos'))
               <a href="#"    <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
                 data-nome="{{$conc->nome}}"
                 data-id1="{{$conc->idconcelho}}"
                 data-distrito="{{$conc->distrito}}"
 
                 data-target="#editconcelhoModal" ><i class="fa fa-edit fa"></i> </a>
-                <a href="concelho/delete/{{$conc->idconcelho}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$conc->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
+
+                @endif
+                @if($user->can('edtConcelhos') && $user->can('rmConcelhos'))
+                <a href="concelho/delete/{{$conc->idconcelho}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$conc->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+               @elseif($user->can('rmConcelhos'))
+               <td><a href="concelho/delete/{{$conc->idconcelho}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$conc->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+               @endif
                </td>
                 @endforeach
               </tbody> 
@@ -164,5 +173,7 @@ object {
             </div>
 
         </div><!-- /.modal-content -->
-
+@else
+Nao tens permissoes
+@endif
 @endsection

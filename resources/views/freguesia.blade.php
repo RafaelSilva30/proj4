@@ -19,6 +19,7 @@ object {
 
 
 </style>
+@if($user->can('verFreguesias'))
 <section class="content-header">
     <h1>
        Freguesia
@@ -31,17 +32,21 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todas as Freguesias </h1>
-            
+              @if($user->can('addFreguesias'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#freguesiaModal"></i></object>
-
+              @endif
             </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nome da Freguesia</th>
-                  <th>Concelho</th>             
+                  <th>Concelho</th>
+
+                   @if($user->can('edtFreguesias') || $user->can('rmFreguesias'))
                   <th>Ações</th>
+                  @endif             
+                  
                 </tr>
                 </thead>
                 <tbody> 
@@ -65,6 +70,8 @@ object {
                 echo "<td>". $row['nome']. "</td>" ;
               }
               ?>
+
+              @if($user->can('edtFreguesias'))
               <td>
               
               <a href="#  <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
@@ -72,9 +79,14 @@ object {
                 data-id1="{{$freg->ID_Freguesia}}"
                 data-concelho="{{$freg->ID_Concelho}}"
                 data-target="#editfreguesiaModal" ><i class="fa fa-edit fa"></i> </a>
-                <a href="freguesia/delete/{{$freg->ID_Freguesia}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$freg->Nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>    
-               
-               </td>
+                @endif
+                @if($user->can('edtFreguesias') && $user->can('rmFreguesias'))
+                <a href="freguesia/delete/{{$freg->ID_Freguesia}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$freg->Nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>  </td>  
+                @elseif ($user->can('rmFreguesias'))
+                <td> <a href="freguesia/delete/{{$freg->ID_Freguesia}}" onclick="return confirm('Tem a certeza que quer apagar o Concelho: {{$freg->Nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>  </td>  
+                @endif
+                </td> 
+                </tr>
                 @endforeach
               </tbody> 
                 </table>
@@ -161,5 +173,9 @@ object {
             </div>
 
         </div><!-- /.modal-content -->
+@else
 
+Nao tens permissoes
+
+@endif
 @endsection

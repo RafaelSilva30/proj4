@@ -65,12 +65,12 @@ Route::patch('/freguesia/{id}',[
 ]); 
 //------------PROGRAMAS-------------//
 Route::get('/programa', 'ProgramaController@index')->name('programa');
-Route::post('/programa', 'ProgramaController@store');
+Route::post('/programa', 'ProgramaController@storeProgUser');
 Route::get('/programa/delete/{id}','ProgramaController@destroy');
 
 Route::patch('/programa/{id}',[
     'as' => 'programas.update',
-    'uses' => 'ProgramaController@update'
+    'uses' => 'ProgramaController@updateProgUser'
 ]); 
 
 Route::post('programa/{id}','ProgramaController@update');
@@ -78,12 +78,12 @@ Route::post('programa/{id}','ProgramaController@update');
 
 //------------ENTIDADES-------------//
 Route::get('/entidade', 'EntidadeController@index')->name('entidade');
-Route::post('/entidade', 'EntidadeController@store');
+Route::post('/entidade', 'EntidadeController@storeEntProg');
 Route::get('/entidades/delete/{id}','EntidadeController@destroy');
 
 Route::patch('/entidade/{id}',[
     'as' => 'entidade.update',
-    'uses' => 'EntidadeController@update'
+    'uses' => 'EntidadeController@updateEntProg'
 ]);
 
 //------------CONTABILISTA-------------//
@@ -102,58 +102,3 @@ Route::get('/permissoes', 'PermissoesController@index')->name('permissoes');
 
 Route::get('/logs', 'LogsController@index')->name('logs');
 
-Route::get('permitir_alterar_permissoes/{id}','PermissoesController@permitir_alterar_permissoes');
-Route::get('nao_alterar_permissoes/{id}','PermissoesController@nao_alterar_permissoes');
-
-// PERMISSOES TAREFAS
-Route::get('permitir_edit_tarefas/{id}','PermissoesController@permitir_edit_tarefas');
-Route::get('nao_permitir_edit_tarefas/{id}','PermissoesController@nao_permitir_edit_tarefas');
-
-Route::get('permitir_add_tarefas/{id}','PermissoesController@permitir_add_tarefas');
-Route::get('nao_permitir_add_tarefas/{id}','PermissoesController@nao_permitir_add_tarefas');
-
-Route::get('permitir_ver_tarefas/{id}','PermissoesController@permitir_ver_tarefas');
-Route::get('nao_ver_tarefas/{id}','PermissoesController@nao_permitir_ver_tarefas');
-
-Route::get('permitir_delete_tarefas/{id}','PermissoesController@permitir_delete_tarefas');
-Route::get('nao_permitir_delete_tarefas/{id}','PermissoesController@nao_permitir_delete_tarefas');
-// PERMISSOES ENTIDADES
-Route::get('permitir_ver_entidades/{id}','PermissoesController@permitir_ver_entidades');
-Route::get('nao_permitir_ver_entidades/{id}','PermissoesController@nao_permitir_ver_entidades');
-
-Route::get('permitir_add_entidades/{id}','PermissoesController@permitir_add_entidades');
-Route::get('nao_permitir_add_entidades/{id}','PermissoesController@nao_permitir_add_entidades');
-
-Route::get('permitir_edit_entidades/{id}','PermissoesController@permitir_edit_entidades');
-Route::get('nao_permitir_edit_entidades/{id}','PermissoesController@nao_permitir_edit_entidades');
-
-Route::get('permitir_delete_entidades/{id}','PermissoesController@permitir_delete_entidades');
-Route::get('nao_permitir_delete_entidades/{id}','PermissoesController@nao_permitir_delete_entidades');
-
-// PERMISSOES PROGRAMAS
-
-Route::get('permitir_ver_programas/{id}','PermissoesController@permitir_ver_programas');
-Route::get('nao_permitir_ver_programas/{id}','PermissoesController@nao_permitir_ver_programas');
-
-Route::get('permitir_add_programas/{id}','PermissoesController@permitir_add_programas');
-Route::get('nao_permitir_add_programas/{id}','PermissoesController@nao_permitir_add_programas');
-
-Route::get('permitir_edit_programas/{id}','PermissoesController@permitir_edit_programas');
-Route::get('nao_permitir_edit_programas/{id}','PermissoesController@nao_permitir_edit_programas');
-
-Route::get('permitir_delete_programas/{id}','PermissoesController@permitir_delete_programas');
-Route::get('nao_permitir_delete_programas/{id}','PermissoesController@nao_permitir_delete_programas');
-
-// PERMISSOES CONTABILISTAS
-
-Route::get('permitir_ver_contabilistas/{id}','PermissoesController@permitir_ver_contabilistas');
-Route::get('nao_permitir_ver_contabilistas/{id}','PermissoesController@nao_permitir_ver_contabilistas');
-
-Route::get('permitir_add_contabilistas/{id}','PermissoesController@permitir_add_contabilistas');
-Route::get('nao_permitir_add_contabilistas/{id}','PermissoesController@nao_permitir_add_contabilistas');
-
-Route::get('permitir_edit_contabilistas/{id}','PermissoesController@permitir_edit_contabilistas');
-Route::get('nao_permitir_edit_contabilistas/{id}','PermissoesController@nao_permitir_edit_contabilistas');
-
-Route::get('permitir_delete_contabilistas/{id}','PermissoesController@permitir_delete_contabilistas');
-Route::get('nao_permitir_delete_contabilistas/{id}','PermissoesController@nao_permitir_delete_contabilistas');

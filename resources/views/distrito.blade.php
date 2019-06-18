@@ -19,6 +19,7 @@ object {
 
 
 </style>
+@if($user->can('verDistritos'))
 <section class="content-header">
     <h1>
        Distritos
@@ -31,16 +32,18 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todos os Distritos </h1>
-            
+              @if($user->can('addDistritos'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#distritoModal"></i></object>
-
+              @endif
             </div>
             <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nome</th>           
+                  @if($user->can('edtDistritos') || $user->can('rmDistritos'))
                   <th>Ações</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody> 
@@ -50,14 +53,20 @@ object {
                 @foreach($data5 as $dist)
               <tr>
               <td>{{$dist->nome}}</td>
-              <td>
-                  
+
+              @if($user->can('edtDistritos'))
+                 <td>
               <a href="#"  <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal" 
                 data-nome="{{$dist->nome}}"
                 data-id1="{{$dist->iddistrito}}"
                   data-target="#editdistritoModal" ><i class="fa fa-edit fa"></i> </a>
-                <a href="distrito/delete/{{$dist->iddistrito}}" onclick="return confirm('Tem a certeza que quer apagar o Distrito: {{$dist->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a>
-               
+                  @endif
+
+                @if($user->can('edtDistritos') && $user->can('rmDistritos'))
+                <a href="distrito/delete/{{$dist->iddistrito}}" onclick="return confirm('Tem a certeza que quer apagar o Distrito: {{$dist->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                @elseif ( $user->can('rmDistritos'))
+                <td> <a href="distrito/delete/{{$dist->iddistrito}}" onclick="return confirm('Tem a certeza que quer apagar o Distrito: {{$dist->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                @endif
                </td>
                 @endforeach
               </tbody> 
@@ -126,5 +135,12 @@ object {
             </div>
 
         </div><!-- /.modal-content -->
+        @else
 
+<section class="content-header">
+<h1> Não tem Permissões para aceder a esta página.</h1>
+</section>
+
+
+@endif
 @endsection

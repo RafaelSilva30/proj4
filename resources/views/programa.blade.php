@@ -4,7 +4,7 @@
           
           ?>  
 
-@if($user->verProgramas == 1)  
+@if($user->can('verPrograma'))
 
 @extends('layouts.main')
 
@@ -34,7 +34,7 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todos os Programas </h1>
-              @if($user->addProgramas == 1)
+              @if($user->can('addPrograma'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#programasModal"></i></object>
               @endif
@@ -45,7 +45,8 @@ object {
 
                   <th>Nome</th>
                   <th>Data de Validade</th>
-                  @if($user->editProgramas == 1 || $user->deleteProgramas == 1)
+                  <th>Users </th>
+                  @if($user->can('edtPrograma') || $user->can('rmPrograma'))
                   <th>Ações</th>
                   @endif
                 </tr>
@@ -59,8 +60,26 @@ object {
 
               <td>{{$prog->nome}}</td>
               <td>{{$prog->data_validade}}</td>
+
+              <?php 
+
+              $connect = mysqli_connect("localhost","root","","p4");
+              if($connect->connect_error){
+                die("connection failed:".$connect->connect_error);
+              }
+              $auxiliar = $prog->id_prog_user;
+
+              $query = "SELECT user from prog_users where $auxiliar = iduser_prog";
+              $result = $connect->query($query);
+
+              while ($row = $result->fetch_assoc()) {
+                echo "<td>". $row['user']. "</td>" ;
+              }
+              //echo("<script>console.log('PHP: ".$result."');</script>");
+              //echo "<td> $result </td>";
+              ?>
               
-              @if($user->editProgramas == 1 )
+              @if($user->can('edtPrograma'))
               <td>
              <a href="#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
               data-id1="{{$prog->idprograma}}"
@@ -68,12 +87,10 @@ object {
               data-data_validade="{{$prog->data_validade}}"
                data-target="#editProgramaModal" ><i class="fa fa-edit fa"></i> </a>
                @endif
-               @if($user->deleteProgramas == 1 && $user->editProgramas == 1 )
+               @if($user->can('rmPrograma')  && $user->can('edtPrograma'))
               <a href="programa/delete/{{$prog->idprograma}}" onclick="return confirm('Tem a certeza que quer apagar o programa: {{$prog->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-              @elseif($user->deleteProgramas == 1 && $user->editProgramas == 0)
+              @elseif ( $user->can('rmPrograma'))
               <td><a href="programa/delete/{{$prog->idprograma}}" onclick="return confirm('Tem a certeza que quer apagar o programa: {{$prog->nome}} ?')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-              @elseif($user->deleteProgramas == 0 && $user->editProgramas == 1)
-              </td> 
               @endif
                 @endforeach
               </tbody> 
@@ -111,8 +128,9 @@ object {
                     </div>  
                     <p>
                               </div>
-
-                
+                              @foreach($data3 as $user)
+                              <input type="checkbox" name="user[]" value="{{$user->name}}"> {{$user->name}}<br>
+                              @endforeach
                         
                             <button href="programa/create" type="submit" class="btn btn-success">
                                 Adicionar Programa
@@ -158,7 +176,9 @@ object {
                     <input type='text' id='datetimepicker1' name='datetimepicker1' data-date-format="YYYY-MM-DD" class="form-control" />
                    
                   </div>
-                   
+                  @foreach($data3 as $user)
+                              <input type="checkbox" name="user[]" value="{{$user->name}}"> {{$user->name}}<br>
+                              @endforeach
                     <div class="form-group">
                         <div>
                         

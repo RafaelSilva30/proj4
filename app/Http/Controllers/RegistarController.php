@@ -44,7 +44,7 @@ class RegistarController extends Controller
        $user->password = Hash::make($request->password);
        $user->email = $request->email;
        $user->save();
-       return redirect('/permissoes');
+       return redirect('/home');
     }
 
     public function update(Request $request,$id)
@@ -59,7 +59,7 @@ class RegistarController extends Controller
         $user->email = $request->email;
 
         $user->save();
-        return redirect('/permissoes');
+        return redirect('/home');
 
         
         

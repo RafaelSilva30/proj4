@@ -3,7 +3,7 @@
           $user = auth()->user();
           
           ?>  
-@if($user->verEntidades == 1)  
+
 
 @extends('layouts.main')
 @section('content')
@@ -19,6 +19,8 @@ object {
 
 
 </style>
+
+@if($user->can('verEntidades'))
 <section class="content-header">
     <h1>
        Entidades
@@ -31,7 +33,7 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title">Todas as Entidades </h1>
-              @if($user->addEntidades == 1)
+              @if($user->can('addEntidades'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
               @endif
@@ -43,12 +45,12 @@ object {
                   <th>Nome</th>
                   <th>Contacto</th>
                   <th>Email</th>
-                  <th>Programa</th>
+                  <th>Programas</th>
                   <th>Contabilista</th>
                   <th>Validade do Contrato</th>
                   <th>Contacto do Contabilista</th>
                   <th>Observações</th>
-                  @if($user->editEntidades == 1 || $user->deleteEntidades == 1)
+                  @if($user->can('edtEntidades') || $user->can('rmEntidades'))
                   <th>Ações</th>
                   @endif
                 </tr>
@@ -73,11 +75,11 @@ object {
               }
               $auxiliar = $entidade->programa;
 
-              $query = "SELECT nome from programas where $auxiliar = idprograma";
+              $query = "SELECT programas from ent_progs where $auxiliar = entidadePrograma";
               $result = $connect->query($query);
 
               while ($row = $result->fetch_assoc()) {
-                echo "<td>". $row['nome']. "</td>" ;
+                echo "<td>". $row['programas']. "</td>" ;
               }
               //echo("<script>console.log('PHP: ".$result."');</script>");
               //echo "<td> $result </td>";
@@ -108,7 +110,6 @@ object {
               
               $row2 = $result2->fetch_assoc();
               
-              //VARIAVEL AUX 1 OU 0 PARA CRIAR BOTÃO OU NÃO
 
 
               ?>
@@ -125,7 +126,7 @@ object {
                 
               
 
-                @if($user->editEntidades == 1 )
+              @if($user->can('edtEntidades'))
               <td>
               <a href= "#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal"
               data-id="{{$entidade->idEntidade}}"
@@ -142,14 +143,13 @@ object {
                data-target="#editEntidadesModal" ><i class="fa fa-edit fa"></i> </a>
                @endif
 
-               @if($user->deleteEntidades == 1 && $user->editEntidades == 1 )
+               @if($user->can('edtEntidades') && $user->can('rmEntidades'))
                 <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                @elseif ($user->deleteEntidades == 1 && $user->editEntidades == 0 )
+                @elseif ( $user->can('rmEntidades'))
                <td> <a href="entidades/delete/{{$entidade->idEntidade}}" onclick="return confirm('Tem a certeza que quer apagar a entidade: {{$entidade->nome}}')"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                @elseif($user->deleteEntidades == 0 && $user->editEntidades == 1)
                 @endif
                 </td>
-              </tr>
+                </tr>
                 @endforeach
                 </tbody>
               </table>
@@ -177,13 +177,13 @@ object {
             <div class="modal-body">
             <div class="form-group">          
                   
-              <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
+              <label class="control-label" style="margin-right:18px;" > Nome da Entidade</label>
             <div>
               <input type="text" name="name" id="nome" >
               </div>
             </div>
-            <label class="control-label" style="margin-right:18px;" >Indique o Distrito</label>
-                        <label class="control-label" style="margin-right:18px;" >Indique o Concelho</label>
+            <label class="control-label" style="margin-right:18px;" >Distrito</label>
+                        <label class="control-label" style="margin-right:18px;" >Concelho</label>
                         <div>
                             <select name="distrito" id="distrito">
                             @foreach ($distrito_class as $data)
@@ -199,12 +199,12 @@ object {
                         </div>
                         <p> </p>
                       <div class="form-group">                    
-                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico da Entidade</label>
+                        <label class="control-label" style="margin-right:18px;" >Contacto telefónico da Entidade</label>
                         <div>
                           <input type="text" id="contacto" name="contacto" >
                         </div>
                       <div class="form-group">                    
-                      <label class="control-label" style="margin-right:18px;" >Indique o email da Entidade</label>
+                      <label class="control-label" style="margin-right:18px;" >Email da Entidade</label>
                       <div>
                         <input type="text" id="email" name="email" >
                       </div>
@@ -218,7 +218,7 @@ object {
                     </div>  
                               </div>
 
-                        <label class="control-label" style="margin-right:18px;" >Indique o contabilista</label>
+                        <label class="control-label" style="margin-right:18px;" >Contabilista</label>
                         <div>
                             <select name="contabilista">
                             @foreach ($contabilista_class as $data)
@@ -228,16 +228,16 @@ object {
                         </div>
 
                         <div class="form-group">                    
-                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico do contabilista</label>
+                        <label class="control-label" style="margin-right:18px;" >Contacto telefónico do contabilista</label>
                         <div>
                           <input type="text" id="contactocontabilista" name="contactocontabilista" >
                         </div>
 
-                        <label class="control-label" style="margin-right:18px;" >Indique o programa</label>
+                        <label class="control-label" style="margin-right:18px;" >Programa</label>
                         <div>
-                            <select name="programa">
+                            
                             @foreach ($programa_class as $data)
-                            <option value="{{$data->idprograma}}" >{{$data->nome}}</option>
+                            <input type="checkbox" name="programa[]" value="{{$data->nome}}"> {{$data->nome}}<br>
                             @endforeach 
                             </select>
                         </div>
@@ -285,13 +285,13 @@ object {
             <div class="modal-body">
             <div class="form-group">          
             <input type="hidden" name="idEntidade" id="id" value="">
-              <label class="control-label" style="margin-right:18px;" >Indique o nome da Entidade</label>
+              <label class="control-label" style="margin-right:18px;" >Nome da Entidade</label>
             <div>
               <input type="text" name="name" id="nome" >
               </div>
             </div>
-            <label class="control-label" style="margin-right:18px;" >Indique o Distrito</label>
-                        <label class="control-label" style="margin-right:18px;" >Indique o Concelho</label>
+            <label class="control-label" style="margin-right:18px;" >Distrito</label>
+                        <label class="control-label" style="margin-right:18px;" > Concelho</label>
                         <div>
                             <select name="distrito" id="distrito">
                             @foreach ($distrito_class as $data)
@@ -307,12 +307,12 @@ object {
                         </div>
                         <p> </p>
                       <div class="form-group">                    
-                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico da Entidade</label>
+                        <label class="control-label" style="margin-right:18px;" >Contacto telefónico da Entidade</label>
                         <div>
                           <input type="text" id="contacto" name="contacto" >
                         </div>
                       <div class="form-group">                    
-                      <label class="control-label" style="margin-right:18px;" >Indique o email da Entidade</label>
+                      <label class="control-label" style="margin-right:18px;" >Email da Entidade</label>
                       <div>
                         <input type="text" id="email" name="email" >
                       </div>
@@ -322,7 +322,7 @@ object {
                     
                   </div>
 
-                        <label class="control-label" style="margin-right:18px;" >Indique o contabilista</label>
+                        <label class="control-label" style="margin-right:18px;" >Contabilista</label>
                         <div>
                             <select name="contabilista" id="contabilista">
                             @foreach ($contabilista_class as $data)
@@ -332,21 +332,18 @@ object {
                         </div>
 
                         <div class="form-group">                    
-                        <label class="control-label" style="margin-right:18px;" >Indique o contacto telefónico do contabilista</label>
+                        <label class="control-label" style="margin-right:18px;" >Contacto telefónico do contabilista</label>
                         <div>
                           <input type="text" id="contactocontabilista" name="contactocontabilista" >
                         </div>
 
-                        <label class="control-label" style="margin-right:18px;" >Indique o programa</label>
+                        <label class="control-label" style="margin-right:18px;" >Programa</label>
                         <div>
-                            <select name="programa" id="programa">
-                            @foreach ($programa_class as $data)
-                            <option value="{{$data->idprograma}}" >{{$data->nome}}</option>
+                        @foreach ($programa_class as $data)
+                            <input type="checkbox" name="programa[]" value="{{$data->nome}}"> {{$data->nome}}<br>
                             @endforeach 
                             </select>
                         </div>
-
-
                     <div class="form-group">
                         <label class="control-label">Observações</label>
                         <div>
@@ -372,5 +369,13 @@ object {
 
 
       </section>
-      @endif
+
+      @else
+
+      <section class="content-header">
+      <h1> Não tem Permissões para aceder a esta página.</h1>
+    </section>
+
+
+@endif
 @endsection

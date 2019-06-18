@@ -17,8 +17,7 @@ object {
   color: #4BB543;
 }
 </style>
-
-
+ @if($user->can('verTarefas'))
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
@@ -61,9 +60,10 @@ object {
                   <th>Data Fim</th>
                   <th>Tempo Total </th>
                   <th>Observações</th>
-                  <th>Id Entidade</th>
+                  <th>Entidade</th>
+                  <th>Programa </th>
                   <th>Tipo</th>
-                  @if($user->can('edtTarefas') && $user->can('rmTarefas'))
+                  @if($user->can('edtTarefas') || $user->can('rmTarefas'))
                   <th>Ações</th>
                   @endif
                 </tr>
@@ -88,7 +88,7 @@ object {
                                         }
 
                                         $auxiliar = $tarefa->id_utilizador;
-
+                                       
                                         $query = "SELECT name from users where $auxiliar = users.id";
                                         $result = $connect->query($query);
 
@@ -115,18 +115,27 @@ object {
                                 
                                 
                                 <td>{{$tarefa->observacao}}</td>
-                                        
+                                         
                                 <?php 
-                                  
+                                   
                                         $auxiliar = $tarefa->entidade;
-
+                                        
                                         $query = "SELECT nome from entidades where $auxiliar = idEntidade";
                                         $result = $connect->query($query);
                                         while ($row = $result->fetch_assoc()) {
                                             echo "<td>". $row['nome']. "</td>" ;
                                         }
-                                        //echo("<script>console.log('PHP: ".$result."');</script>");
-                                        //echo "<td> $result </td>";
+                                ?>
+
+                                <?php 
+                                   
+                                   $auxiliar = $tarefa->id_prog;
+                                   
+                                   $query = "SELECT nome from programas where $auxiliar = idprograma";
+                                   $result = $connect->query($query);
+                                   while ($row = $result->fetch_assoc()) {
+                                       echo "<td>". $row['nome']. "</td>" ;
+                                   }
                                 ?>
 
                                 <?php 
@@ -136,7 +145,7 @@ object {
                                         $auxiliar = $tarefa->tipo_tarefa_idtipo_tarefa;
                                         $query = "SELECT nome from tipo_tarefa where $auxiliar = idtipo_tarefa";
                                         $result = $connect->query($query);
-
+                                        
                                         while ($row = $result->fetch_assoc()) {
                                             echo "<td>". $row['nome']. "</td>" ;
                                         }
@@ -164,15 +173,14 @@ object {
                            
                              @if($user->can('edtTarefas') && $user->can('rmTarefas'))
                                  <a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button"  class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                                 @elseif($user->can('edtTarefas') && $user->can('rmTarefas') == false)
+                                 @elseif ($user->can('rmTarefas'))
                                
                                 <td><a href="tarefas/delete/{{$tarefa->idtarefas}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
                                 @endif
                                
                                 </tr>
                         @endforeach
-                    @else  
-                        <p>Sem Tarefas</p> 
+                    
                     @endif   
                 </tbody>
               </table>
@@ -222,7 +230,20 @@ object {
                             <option value="{{$data->idtipo_tarefa}}" >{{$data->nome}}</option>
                             @endforeach 
                             </select>
-                    </div><label for="username">Data do Inicio da Tarefa</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="control-label">Programa</label>
+                        <div>
+                        <select name="programa"  style="margin-right:10px;">
+                            @foreach ($programa_class as $data)
+                            <option value="{{$data->idprograma}}" >{{$data->nome}}</option>
+                            @endforeach 
+                            </select>
+                    </div>
+                    </div>
+                    
+                    <label for="username">Data do Inicio da Tarefa</label>
                       <div>
                       
                             <div class='input-group datetime' name="datetimepicker6" id="datetimepicker6"  >
@@ -314,12 +335,12 @@ object {
                       <div>
                       
                             <div class='input-group datetime' name="datetimepicker6" id="datetimepicker6">
-                                <input type='datetime' class="form-control" value="{{$tarefa->data_ini}}" name="datetimepicker6" id="datetimepicker6"  />
+                                <input type='datetime' class="form-control"  name="datetimepicker6" id="datetimepicker6"  />
                                 
                                 </div><label for="username">Data do Fim da Tarefa</label>
                                 <div class="form-group">
                             <div class='input-group datetime' name="datetimepicker7" id="datetimepicker7" >
-                                <input type='datetime' class="form-control" value="{{$tarefa->data_fim}}" name="datetimepicker7" id="datetimepicker7"/>
+                                <input type='datetime' class="form-control" name="datetimepicker7" id="datetimepicker7"/>
                               </div>
                           </div>
                       </div>
@@ -347,7 +368,13 @@ object {
     </div><!-- /.modal-dialog --> 
   </div><!-- /.modal -->
 </section>
+@else
+<section class="content-header">
+<h1> Não tem Permissões para aceder a esta página.</h1>
+    </section>
 
+
+@endif
 @endsection
 
 

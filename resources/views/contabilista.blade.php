@@ -3,7 +3,7 @@
           $user = auth()->user();
           
           ?>  
-@if($user->verContabilistas == 1)  
+
 @extends('layouts.main')
 
 @section('content')
@@ -18,6 +18,7 @@ object {
   color: #4BB543;
 }
 </style>
+@if($user->can('verContabilista'))
 <section class="content-header">
     <h1>
        Contabilista
@@ -30,7 +31,7 @@ object {
             <div class="box">
                 <div class="box-header">
                     <h1 class="box-title">Todas os Contabilistas </h1>
-                    @if($user->addContabilistas == 1)
+                    @if($user->can('addContabilista'))
                     <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
                     class="bv" data-toggle="modal" data-target="#ContabilistaModal"></i></object>
                     @endif
@@ -42,7 +43,7 @@ object {
                     <th>Nome</th>
                     <th>Contacto</th>
                     <th>Email</th>
-                    @if($user->editContabilistas == 1 || $user->deleteContabilistas == 1)
+                    @if($user->can('edtContabilista') || $user->can('rmContabilista'))
                   <th>Ações</th>
                   @endif
                     </tr>
@@ -60,7 +61,7 @@ object {
                     <td>{{$contabilista->email}}</td>
                         
                   
-                    @if($user->editContabilistas == 1  )
+                    @if($user->can('edtContabilista'))
                         <td>
                        <a href="#" <button type="button" class="btn btn-warning" type="button" class="bv" data-toggle="modal" 
                         data-id = "{{$contabilista->idcontabilista}}"
@@ -68,17 +69,16 @@ object {
                         data-contacto = "{{$contabilista->contacto}}"
                         data-email = "{{$contabilista->email}}"
                         data-target="#editarContabilista" ><i class="fa fa-edit fa"></i> </a>
-
-                    @if($user->deleteContabilistas == 1 && $user->editContabilistas == 1) 
-                      <a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                    @elseif($user->deleteContabilistas == 1 && $user->editContabilistas == 0)
-                    <td><a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
-                    @elseif($user->deleteContabilistas == 0 && $user->editContabilistas == 1)
+                        @endif
+                        @if($user->can('edtContabilista') && $user->can('rmContabilista'))
+                        <a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                        @elseif ($user->can('rmContabilista'))
+                       <td> <a href="contabilista/delete/{{$contabilista->idcontabilista}}"><button type="button" class="btn btn-danger"><i class="fa fa-remove fa" ></i></button></a> </td>
+                        @endif
                     </td>
-                    @endif
                     </tr>
                     
-                    @endif
+                  
                     @endforeach
 
                     @endif

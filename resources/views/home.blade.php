@@ -4,7 +4,7 @@
           ?>
 
          
-@if($user->verTarefas == 1)  
+  
 @extends('layouts.main')
 
 @section('content')
@@ -20,6 +20,7 @@ object {
 
 
 </style>
+@if($user->can('verTarefas'))
 <section class="content-header">
 
       <h1>
@@ -34,7 +35,7 @@ object {
             <div class="box">
             <div class="box-header">
               <h1 class="box-title" >Tarefas dos proximos 30 dias </h1>
-              @if($user->addTarefas == 1)
+              @if($user->can('addTarefas'))
               <object align="right"><i class="fa fa-plus-square fa-2x"   type="button" 
               class="bv" data-toggle="modal" data-target="#entidadesModal"></i></object>
               @endif

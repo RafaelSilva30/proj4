@@ -132,7 +132,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less style="display: block;" -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
-        @if ($user->verTarefas==1)
+        @if($user->can('verTarefas'))
         <li class="treeview">
           <a href="#">
           <i class="fa fa-tasks" ></i><span>Tarefas</span>
@@ -147,7 +147,7 @@
           </li>
           @endif
 
-          @if ($user->alterarPermissoes==1)
+           @if($user->can('addUtilizadores'))
         <li class="treeview">
         <a href="#">
           <i class="fa fa-users" ></i><span>Utilizadores</span>
@@ -156,26 +156,34 @@
             </span>
           </a>
           <ul class="treeview-menu">
-        <li> <a href="{{route('permissoes')}}"><i class="fa fa-unlock" aria-hidden="true"></i> <span>Usadasd</span></a></li>
+        <li> <a href="{{route('permissoes')}}"><i class="fa fa-unlock" aria-hidden="true"></i> <span>Gerir utilizadores</span></a></li>
         </ul>
         </li>
         @endif
 
+        @if($user->can('verDistritos') || ($user->can('verConcelhos')) || ($user->can('verFreguesias')))
         <li class="treeview">
         <a href="#">
-          <i class="fa fa-users" ></i><span>José Maria da Costa</span>
+          <i class="fa fa-users" ></i><span>Munícipios</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-down"></i>
             </span>
           </a>
           <ul class="treeview-menu">
+          @if($user->can('verDistritos'))
         <li> <a href="{{route('distrito')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Distritos</span></a></li>
+        @endif
+        @if($user->can('verConcelhos'))
         <li> <a href="{{route('concelho')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Concelhos</span></a></li>
+        @endif
+        @if($user->can('verFreguesias'))
         <li> <a href="{{route('freguesia')}}"><i class="fa fa-map-signs" aria-hidden="true"></i> <span>Freguesia</span></a></li>
+        @endif
         </ul>
         </li>
-
-        @if ($user->verEntidades==1)
+        
+        @endif
+        @if($user->can('verEntidades'))
         <li class="treeview">
         <li> <a href="{{route('entidade')}}"><i class="fa fa-user-circle"></i></i> <span>Entidades</span></li>
             <span class="pull-right-container" >
@@ -183,7 +191,7 @@
           </a>
         </li>
         @endif
-        @if ($user->verProgramas==1)
+        @if($user->can('verPrograma'))
         <li class="treeview">
         <li> <a href="{{route('programa')}}"><i class="fa fa-copyright" aria-hidden="true"></i> <span>Programas</span></li>
             <span class="pull-right-container" >
@@ -191,14 +199,15 @@
           </a>
         </li>
         @endif
-        @if ($user->verContabilistas==1)
+        @if($user->can('verContabilista'))
         <li class="treeview">
         <li> <a href="{{route('contabilista')}}"><i class="fa fa-eur" aria-hidden="true"></i> <span>Contabilista</span></li>
             <span class="pull-right-container" >
             </span>
           </a>
         </li>
-
+        @endif
+        @if($user->can('verLogs'))
         <li class="treeview">
         <li> <a href="{{route('logs')}}"><i class="fa fa-cogs" aria-hidden="true"></i> <span>logs</span></li>
             <span class="pull-right-container" >

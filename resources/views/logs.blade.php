@@ -1,12 +1,22 @@
+
+
+<?php
+          $user = auth()->user();
+          
+          ?>  
+
 @extends('layouts.main')
 
 @section('content')
-
+@if($user->can('verLogs'))
 <section class="content-header">
+
     <h1>
        Logs
       </h1>
     </section>
+
+   
     <!-- Main content -->
     <section class="content">
       <div class="row">
@@ -42,4 +52,8 @@
 
                 </div>
                 </div>
+
+  @else
+  Nao tens permissões
+  @endif
 @endsection
